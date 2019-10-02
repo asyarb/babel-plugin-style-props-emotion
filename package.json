@@ -1,5 +1,5 @@
 {
-  "name": "babel-plugin-style-props-emotino",
+  "name": "babel-plugin-style-props-emotion",
   "version": "0.1.0",
   "description": "The adapter to utilize style-props with the Emotion CSS-in-JS library.",
   "main": "dist/index.js",
@@ -55,7 +55,7 @@
     "standard-version": "^7.0.0",
     "ts-jest": "^24.1.0",
     "tslib": "^1.10.0",
-    "typescript": "^3.6.2"
+    "typescript": "^3.7.0-beta"
   },
   "husky": {
     "hooks": {

@@ -5,10 +5,3 @@ export interface Babel {
 }
 
 export type StylePropExpression = null | BabelTypes.Expression
-
-export interface PluginOptions {
-  stripProps: boolean
-  variants: {
-    [key: string]: string
-  }
-}
