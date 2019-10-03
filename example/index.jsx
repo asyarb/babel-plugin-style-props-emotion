@@ -21,6 +21,11 @@ export const Example = () => {
             {
               color: myVar,
             },
+            { color: 'green' },
+            {
+              color: 'purple',
+              padding: '2rem',
+            },
           ],
           focus: [{}],
           active: [{}],
