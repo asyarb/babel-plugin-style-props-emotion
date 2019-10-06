@@ -5,7 +5,8 @@ import {
   ObjectExpression,
   ObjectProperty,
 } from '@babel/types'
-import { THEME_MAP } from './constants'
+import { SCALE_MAP, THEME_MAP } from './constants'
+import { normalizeScale } from './utils'
 
 export const buildThemedResponsiveStyles = (
   objProp: ObjectProperty,
@@ -66,4 +67,24 @@ export const buildThemedResponsiveStyles = (
   const responsiveStyles = responsive as ObjectProperty[]
 
   return [mobileStyles, responsiveStyles]
+}
+
+export const buildThemedResponsiveScales = (scaleProp: ObjectProperty) => {
+  const value = scaleProp.value as ObjectExpression
+  const styles = value.properties as ObjectProperty[]
+
+  styles.reduce((acc, scale) => {
+    if (SCALE_MAP) {
+    }
+    // const baseKey = scale.key.name as string
+    // const key = SCALE_MAP[baseKey] || baseKey
+    // const fallbackKey = THEME_MAP[baseKey] || baseKey
+
+    const scaleArr = scale.value as ArrayExpression
+    const normalizedScale = normalizeScale(scaleArr)
+
+    console.log(normalizedScale)
+
+    return acc
+  }, [])
 }

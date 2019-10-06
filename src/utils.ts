@@ -1,5 +1,6 @@
 import { types as t } from '@babel/core'
 import {
+  ArrayExpression,
   JSXAttribute,
   JSXExpressionContainer,
   JSXSpreadAttribute,
@@ -48,4 +49,16 @@ export const extractStyleObjects = (styleProp: JSXAttribute) => {
     active,
     scales,
   }
+}
+
+export const normalizeScale = (scale: ArrayExpression) => {
+  const elements = [...scale.elements]
+
+  for (let i = 0; i < 5; i++) {
+    if (t.isNullLiteral(elements[i]) || elements[i] === undefined) {
+      elements[i] = elements[i - 1] || t.nullLiteral()
+    }
+  }
+
+  return elements
 }

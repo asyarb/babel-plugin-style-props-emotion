@@ -89,3 +89,93 @@ export const THEME_MAP = {
 } as {
   [key: string]: string
 }
+
+export const SCALE_MAP = {
+  // SPACE
+  margin: 'spaceScales',
+  marginTop: 'spaceScales',
+  marginRight: 'spaceScales',
+  marginBottom: 'spaceScales',
+  marginLeft: 'spaceScales',
+  marginX: 'spaceScales',
+  marginY: 'spaceScales',
+  padding: 'spaceScales',
+  paddingTop: 'spaceScales',
+  paddingRight: 'spaceScales',
+  paddingBottom: 'spaceScales',
+  paddingLeft: 'spaceScales',
+  paddingX: 'spaceScales',
+  paddingY: 'spaceScales',
+  m: 'spaceScales',
+  mt: 'spaceScales',
+  mr: 'spaceScales',
+  mb: 'spaceScales',
+  ml: 'spaceScales',
+  mx: 'spaceScales',
+  my: 'spaceScales',
+  p: 'spaceScales',
+  pt: 'spaceScales',
+  pr: 'spaceScales',
+  pb: 'spaceScales',
+  pl: 'spaceScales',
+  px: 'spaceScales',
+  py: 'spaceScales',
+
+  // COLOR
+  color: 'colorScales',
+  backgroundColor: 'colorScales',
+
+  // TYPOGRAPHY
+  fontFamily: 'fontScales',
+  fontSize: 'fontSizeScales',
+  fontWeight: 'fontWeightScales',
+  lineHeight: 'lineHeightScales',
+  letterSpacing: 'letterSpacingScales',
+
+  // LAYOUT
+  width: 'sizeScales',
+  height: 'sizeScales',
+  minWidth: 'sizeScales',
+  maxWidth: 'sizeScales',
+  minHeight: 'sizeScales',
+  maxHeight: 'sizeScales',
+
+  // FLEXBOX -- needs no theme keys
+
+  // GRID LAYOUT
+  gridGap: 'spaceScales',
+  gridRowGap: 'spaceScales',
+  gridColumnGap: 'spaceScales',
+  rowGap: 'spaceScales',
+  columnGap: 'spaceScales',
+  gap: 'spaceScales',
+
+  // BACKGROUND -- needs no theme keys
+
+  // BORDER
+  border: 'borderScales',
+  borderTop: 'borderScales',
+  borderRight: 'borderScales',
+  borderBottom: 'borderScales',
+  borderLeft: 'borderScales',
+  borderWidth: 'borderWidthScales',
+  borderColor: 'colorScales',
+  borderTopColor: 'colorScales',
+  borderRightColor: 'colorScales',
+  borderBottomColor: 'colorScales',
+  borderLeftColor: 'colorScales',
+  borderRadius: 'radiiScales',
+
+  // POSITION
+  zIndex: 'zIndiceScales',
+  top: 'spaceScales',
+  right: 'spaceScales',
+  bottom: 'spaceScales',
+  left: 'spaceScales',
+
+  // SHADOW
+  boxShadow: 'shadowScales',
+  textShadow: 'shadowScales',
+} as {
+  [key: string]: string
+}

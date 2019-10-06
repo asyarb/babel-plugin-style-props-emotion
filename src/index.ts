@@ -1,7 +1,10 @@
 import { NodePath, types as t } from '@babel/core'
 import { JSXAttribute, JSXOpeningElement, Program } from '@babel/types'
 import { mergeMobileStyles, mergeResponsiveStyles } from 'mergers'
-import { buildThemedResponsiveStyles } from './builders'
+import {
+  buildThemedResponsiveStyles,
+  buildThemedResponsiveScales,
+} from './builders'
 import { extractStyleObjects, extractStyleProp } from './utils'
 
 const jsxOpeningElementVisitor = {
@@ -12,7 +15,10 @@ const jsxOpeningElementVisitor = {
     const styleProp = extractStyleProp(allProps) as JSXAttribute
     if (!styleProp) return
 
-    const { base, hover, focus, active } = extractStyleObjects(styleProp)
+    const { base, hover, focus, active, scales } = extractStyleObjects(
+      styleProp
+    )
+
     const [mobileBase, responsiveBase] = buildThemedResponsiveStyles(base)
     const [mobileHover, responsiveHover] = buildThemedResponsiveStyles(
       hover,
@@ -26,6 +32,8 @@ const jsxOpeningElementVisitor = {
       active,
       '&:active'
     )
+
+    buildThemedResponsiveScales(scales)
 
     const mergedMobile = mergeMobileStyles(
       mobileBase,

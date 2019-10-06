@@ -2,6 +2,7 @@ import React from 'react'
 
 export const Example = () => {
   const myVar = 'green'
+  const someVar = ['l', null, 'xl']
 
   return (
     <div
@@ -33,6 +34,8 @@ export const Example = () => {
         extensions: {
           scales: {
             margin: ['xl', null, 'l'],
+            padding: ['l'],
+            border: [someVar],
           },
         },
       }}
