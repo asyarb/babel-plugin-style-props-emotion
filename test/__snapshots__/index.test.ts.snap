@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`style props parses style props 1`] = `
+"import _css from \\"@emotion/css\\";
+import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
+import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
+
+___EmotionJSX(\\"div\\", {
+  css:
+  /*#__PURE__*/
+  _css({
+    color: __getStyle(theme, \\"colors\\", 'tomato'),
+    backgroundColor: __getStyle(theme, \\"colors\\", 'blue')
+  })
+});"
+`;

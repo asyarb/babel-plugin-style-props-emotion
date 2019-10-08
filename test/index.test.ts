@@ -1,11 +1,24 @@
-// import { PluginItem, transformSync } from '@babel/core'
-// import jsxSyntax from '@babel/plugin-syntax-jsx'
+import { PluginItem, transformSync } from '@babel/core'
+import react from '@babel/preset-react'
+import emotionPreset from '@emotion/babel-preset-css-prop'
+import styleProps from 'babel-plugin-style-props'
+import emotionAdapter from '../src'
 
-// const plugins = [jsxSyntax]
+const presets = [react, emotionPreset]
+const plugins = [
+  [styleProps, { stripProps: true }],
+  [emotionAdapter, { stripProp: true }],
+]
 
-// const parseCode = (example: string, plug?: PluginItem[]) =>
-//   transformSync(example, { plugins: plug || plugins })!.code
+const parseCode = (example: string, plug?: PluginItem[]) =>
+  transformSync(example, { plugins: plug || plugins, presets })!.code
 
-describe('it runs', () => {
-  expect(true).toBe(true)
+describe('style props', () => {
+  it('parses style props', () => {
+    const result = parseCode(`
+      <div color='tomato' bg='blue' />
+    `)
+
+    expect(result).toMatchSnapshot()
+  })
 })

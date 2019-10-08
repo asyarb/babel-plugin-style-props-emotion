@@ -1,13 +1,13 @@
 import { NodePath, types as t } from '@babel/core'
 import { JSXAttribute, JSXOpeningElement, Program } from '@babel/types'
-import { DEFAULT_OPTIONS } from 'constants.js'
-import { mergeMobileStyles, mergeResponsiveStyles } from 'mergers'
 import pkg from '../package.json'
 import { Babel, PluginOptions } from '../types'
 import {
   buildThemedResponsiveScales,
   buildThemedResponsiveStyles,
 } from './builders'
+import { DEFAULT_OPTIONS } from './constants'
+import { mergeMobileStyles, mergeResponsiveStyles } from './mergers'
 import { extractStyleObjects, extractStyleProp, stripStyleProp } from './utils'
 
 let fileHasStylePropsInJSX: boolean
