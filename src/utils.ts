@@ -62,3 +62,16 @@ export const normalizeScale = (scale: ArrayExpression) => {
 
   return elements
 }
+
+export const stripStyleProp = (
+  props: (JSXAttribute | JSXSpreadAttribute)[]
+) => {
+  return props.filter(prop => {
+    if (t.isJSXSpreadAttribute(prop)) return true
+
+    const propName = prop.name.name
+    if (propName === '__styleProps__') return false
+
+    return true
+  })
+}

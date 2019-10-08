@@ -1,3 +1,9 @@
+import { PluginOptions } from '../types'
+
+export const DEFAULT_OPTIONS = {
+  stripProp: false,
+} as PluginOptions
+
 export const STYLE_PROPS_ID = '__styleProps__'
 
 export const THEME_MAP = {

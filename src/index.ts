@@ -1,19 +1,28 @@
 import { NodePath, types as t } from '@babel/core'
 import { JSXAttribute, JSXOpeningElement, Program } from '@babel/types'
+import { DEFAULT_OPTIONS } from 'constants.js'
 import { mergeMobileStyles, mergeResponsiveStyles } from 'mergers'
+import pkg from '../package.json'
+import { Babel, PluginOptions } from '../types'
 import {
   buildThemedResponsiveScales,
   buildThemedResponsiveStyles,
 } from './builders'
-import { extractStyleObjects, extractStyleProp } from './utils'
+import { extractStyleObjects, extractStyleProp, stripStyleProp } from './utils'
+
+let fileHasStylePropsInJSX: boolean
 
 const jsxOpeningElementVisitor = {
-  JSXOpeningElement(path: NodePath<JSXOpeningElement>) {
+  JSXOpeningElement(path: NodePath<JSXOpeningElement>, options: PluginOptions) {
+    fileHasStylePropsInJSX = false
+
     const allProps = path.node.attributes
     if (!allProps.length) return
 
     const styleProp = extractStyleProp(allProps) as JSXAttribute
     if (!styleProp) return
+
+    fileHasStylePropsInJSX = true
 
     const { base, hover, focus, active, scales } = extractStyleObjects(
       styleProp
@@ -49,6 +58,8 @@ const jsxOpeningElementVisitor = {
       responsiveActive
     )
 
+    if (options.stripProp) path.node.attributes = stripStyleProp(allProps)
+
     const cssObj = t.objectExpression([...mergedMobile, ...mergedResponsive])
     const cssProp = t.jsxAttribute(
       t.jsxIdentifier('css'),
@@ -59,13 +70,36 @@ const jsxOpeningElementVisitor = {
   },
 }
 
-export default () => {
+export default (_babel: Babel, opts: PluginOptions) => {
+  const options = { ...DEFAULT_OPTIONS, ...opts }
+
   return {
     name: 'style-props-emotion',
     visitor: {
       Program: {
         enter(path: NodePath<Program>) {
-          path.traverse(jsxOpeningElementVisitor)
+          path.traverse(jsxOpeningElementVisitor, options)
+        },
+        exit(path: NodePath<Body>) {
+          if (!fileHasStylePropsInJSX) return
+
+          //@ts-ignore
+          path.unshiftContainer(
+            'body',
+            t.importDeclaration(
+              [
+                t.importSpecifier(
+                  t.identifier('__getStyle'),
+                  t.identifier('getStyle')
+                ),
+                t.importSpecifier(
+                  t.identifier('__getScaleStyle'),
+                  t.identifier('getScaleStyle')
+                ),
+              ],
+              t.stringLiteral(pkg.name + '/runtime')
+            )
+          )
         },
       },
     },

@@ -28,7 +28,7 @@ export const buildThemedResponsiveStyles = (
 
       const themedStyle = t.objectProperty(
         t.identifier(baseKey),
-        t.callExpression(t.identifier('getStyle'), [
+        t.callExpression(t.identifier('__getStyle'), [
           t.identifier('theme'),
           t.stringLiteral(key),
           value,
@@ -88,7 +88,7 @@ export const buildThemedResponsiveScales = (scaleProp: ObjectProperty) => {
       const isMobile = i === 0
       const themedStyle = t.objectProperty(
         t.identifier(baseKey),
-        t.callExpression(t.identifier('getScaleStyle'), [
+        t.callExpression(t.identifier('__getScaleStyle'), [
           t.identifier('theme'),
           t.stringLiteral(key),
           t.stringLiteral(fallbackKey),
