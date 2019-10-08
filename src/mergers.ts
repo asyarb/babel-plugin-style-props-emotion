@@ -3,11 +3,12 @@ import { ObjectExpression, ObjectProperty } from '@babel/types'
 
 export const mergeMobileStyles = (
   base: ObjectProperty[],
+  scales: ObjectProperty[],
   hover: ObjectProperty[],
   focus: ObjectProperty[],
   active: ObjectProperty[]
 ) => {
-  const result = [...base]
+  const result = [...base, ...scales]
 
   const [hoverObj] = hover
   const [focusObj] = focus
@@ -30,12 +31,14 @@ export const mergeMobileStyles = (
 
 export const mergeResponsiveStyles = (
   base: ObjectProperty[],
+  scales: ObjectProperty[],
   hover: ObjectProperty[],
   focus: ObjectProperty[],
   active: ObjectProperty[]
 ) => {
   const maxBreakpoints = Math.max(
     base.length,
+    scales.length,
     hover.length,
     focus.length,
     active.length
@@ -46,6 +49,8 @@ export const mergeResponsiveStyles = (
     const breakpointStyles = [] as ObjectProperty[]
 
     const baseValue = base[i] && (base[i].value as ObjectExpression | false)
+    const scaleValue =
+      scales[i] && (scales[i].value as ObjectExpression | false)
     const hoverValue = hover[i] && (hover[i].value as ObjectExpression | false)
     const focusValue = focus[i] && (focus[i].value as ObjectExpression | false)
     const activeValue =
@@ -54,6 +59,10 @@ export const mergeResponsiveStyles = (
     if (baseValue) {
       const baseStyles = baseValue.properties as ObjectProperty[]
       if (baseStyles.length) breakpointStyles.push(...baseStyles)
+    }
+    if (scaleValue) {
+      const scaleStyles = scaleValue.properties as ObjectProperty[]
+      if (scaleStyles.length) breakpointStyles.push(...scaleStyles)
     }
     if (hoverValue) {
       const [hoverProperty] = hoverValue.properties as ObjectProperty[]

@@ -2,8 +2,8 @@ import { NodePath, types as t } from '@babel/core'
 import { JSXAttribute, JSXOpeningElement, Program } from '@babel/types'
 import { mergeMobileStyles, mergeResponsiveStyles } from 'mergers'
 import {
-  buildThemedResponsiveStyles,
   buildThemedResponsiveScales,
+  buildThemedResponsiveStyles,
 } from './builders'
 import { extractStyleObjects, extractStyleProp } from './utils'
 
@@ -32,17 +32,18 @@ const jsxOpeningElementVisitor = {
       active,
       '&:active'
     )
-
-    buildThemedResponsiveScales(scales)
+    const [mobileScales, responsiveScales] = buildThemedResponsiveScales(scales)
 
     const mergedMobile = mergeMobileStyles(
       mobileBase,
+      mobileScales,
       mobileHover,
       mobileFocus,
       mobileActive
     )
     const mergedResponsive = mergeResponsiveStyles(
       responsiveBase,
+      responsiveScales,
       responsiveHover,
       responsiveFocus,
       responsiveActive

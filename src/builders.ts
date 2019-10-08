@@ -71,20 +71,50 @@ export const buildThemedResponsiveStyles = (
 
 export const buildThemedResponsiveScales = (scaleProp: ObjectProperty) => {
   const value = scaleProp.value as ObjectExpression
-  const styles = value.properties as ObjectProperty[]
+  const scales = value.properties as ObjectProperty[]
 
-  styles.reduce((acc, scale) => {
-    if (SCALE_MAP) {
-    }
-    // const baseKey = scale.key.name as string
-    // const key = SCALE_MAP[baseKey] || baseKey
-    // const fallbackKey = THEME_MAP[baseKey] || baseKey
+  const mobileScales = [] as ObjectProperty[]
+  const responsiveScales = [] as ObjectProperty[][]
+
+  scales.forEach(scale => {
+    const baseKey = scale.key.name as string
+    const key = SCALE_MAP[baseKey] || baseKey
+    const fallbackKey = THEME_MAP[baseKey] || baseKey
 
     const scaleArr = scale.value as ArrayExpression
-    const normalizedScale = normalizeScale(scaleArr)
+    const normalizedScaleArr = normalizeScale(scaleArr) as Expression[]
 
-    console.log(normalizedScale)
+    normalizedScaleArr.forEach((style, i) => {
+      const isMobile = i === 0
+      const themedStyle = t.objectProperty(
+        t.identifier(baseKey),
+        t.callExpression(t.identifier('getScaleStyle'), [
+          t.identifier('theme'),
+          t.stringLiteral(key),
+          t.stringLiteral(fallbackKey),
+          style,
+          t.numericLiteral(i),
+        ])
+      )
 
-    return acc
-  }, [])
+      if (isMobile) mobileScales.push(themedStyle)
+      else {
+        responsiveScales[i - 1] = responsiveScales[i - 1] || []
+        responsiveScales[i - 1].push(themedStyle)
+      }
+    })
+  })
+
+  const mediaQueryObjs = responsiveScales.map((breakpointStyles, i) => {
+    const breakpointObj = t.objectExpression(breakpointStyles)
+    const mediaQueryKey = t.memberExpression(
+      t.identifier('theme.mediaQueries'),
+      t.numericLiteral(i),
+      true
+    )
+
+    return t.objectProperty(mediaQueryKey, breakpointObj, true)
+  })
+
+  return [mobileScales, mediaQueryObjs]
 }
