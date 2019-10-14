@@ -5,6 +5,7 @@ import {
   JSXAttribute,
   JSXExpressionContainer,
   JSXSpreadAttribute,
+  NumericLiteral,
   ObjectExpression,
   ObjectProperty,
 } from '@babel/types'
@@ -61,8 +62,11 @@ export const normalizeStyle = (style: Expression) => {
     normalizedStyle = t.stringLiteral(style.value.substring(1))
   }
 
-  if (t.isBinaryExpression(style)) {
-    console.log(style)
+  if (t.isUnaryExpression(style) && style.operator === '-') {
+    const baseNode = style.argument as NumericLiteral
+
+    isNegative = true
+    normalizedStyle = t.numericLiteral(baseNode.value)
   }
 
   return { normalizedStyle, isNegative }

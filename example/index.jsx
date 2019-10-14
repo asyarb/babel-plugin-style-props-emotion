@@ -7,16 +7,16 @@ export const Example = () => {
         css: {
           base: [
             {
-              margin: '-large',
+              margin: -1,
             },
             {
-              margin: '-xlarge',
+              margin: -2,
             },
             {
-              margin: 'medium',
+              margin: 3,
             },
             {
-              margin: 'large',
+              margin: 4,
             },
           ],
           hover: [{}],
@@ -25,7 +25,7 @@ export const Example = () => {
         },
         extensions: {
           scales: {
-            padding: ['-large'],
+            padding: [-1],
           },
         },
       }}
