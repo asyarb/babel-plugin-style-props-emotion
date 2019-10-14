@@ -5,6 +5,7 @@ import { Babel, PluginOptions } from '../types'
 import {
   buildThemedResponsiveScales,
   buildThemedResponsiveStyles,
+  buildThemedVariantStyles,
 } from './builders'
 import { DEFAULT_OPTIONS } from './constants'
 import { mergeMobileStyles, mergeResponsiveStyles } from './mergers'
@@ -24,9 +25,14 @@ const jsxOpeningElementVisitor = {
 
     fileHasStylePropsInJSX = true
 
-    const { base, hover, focus, active, scales } = extractStyleObjects(
-      styleProp
-    )
+    const {
+      base,
+      hover,
+      focus,
+      active,
+      scales,
+      variants,
+    } = extractStyleObjects(styleProp)
 
     const [mobileBase, responsiveBase] = buildThemedResponsiveStyles(base)
     const [mobileHover, responsiveHover] = buildThemedResponsiveStyles(
@@ -42,6 +48,7 @@ const jsxOpeningElementVisitor = {
       '&:active'
     )
     const [mobileScales, responsiveScales] = buildThemedResponsiveScales(scales)
+    const variantStyles = buildThemedVariantStyles(variants)
 
     const mergedMobile = mergeMobileStyles(
       mobileBase,
@@ -60,7 +67,11 @@ const jsxOpeningElementVisitor = {
 
     if (options.stripProp) path.node.attributes = stripStyleProp(allProps)
 
-    const cssObj = t.objectExpression([...mergedMobile, ...mergedResponsive])
+    const cssObj = t.objectExpression([
+      ...mergedMobile,
+      ...mergedResponsive,
+      ...variantStyles,
+    ])
     const cssProp = t.jsxAttribute(
       t.jsxIdentifier('css'),
       t.jsxExpressionContainer(cssObj)

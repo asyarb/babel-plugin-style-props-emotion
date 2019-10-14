@@ -6,7 +6,15 @@ import emotionAdapter from '../src'
 
 const presets = [react, emotionPreset]
 const plugins = [
-  [styleProps, { stripProps: true }],
+  [
+    styleProps,
+    {
+      stripProps: true,
+      variants: {
+        boxStyle: 'boxStyles',
+      },
+    },
+  ],
   [emotionAdapter, { stripProp: true }],
 ]
 
@@ -113,6 +121,7 @@ describe('style prop parsing', () => {
                 scales: {
                   margin: ['xl'],
                 },
+                variants: {},
               },
             }}
           />
@@ -194,6 +203,7 @@ describe('scale prop parsing', () => {
                 scales: {
                   padding: ['xl'],
                 },
+                variants: {},
               },
             }} 
           />
@@ -280,6 +290,7 @@ describe('modifiers', () => {
                 scales: {
                   padding: ['xl'],
                 },
+                variants: {},
               },
             }}
           />

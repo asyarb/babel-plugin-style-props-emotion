@@ -40,11 +40,12 @@ export const extractStyleObjects = (styleProp: JSXAttribute) => {
   const extensionsValue = extensions.value as ObjectExpression
 
   const [base, hover, focus, active] = cssValue.properties as ObjectProperty[]
-  const [scales] = extensionsValue.properties as ObjectProperty[]
+  const [scales, variants] = extensionsValue.properties as ObjectProperty[]
 
   return {
     css,
     extensions,
+    variants,
     base,
     hover,
     focus,

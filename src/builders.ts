@@ -1,5 +1,11 @@
 import { types as t } from '@babel/core'
-import { ArrayExpression, Expression, ObjectExpression, ObjectProperty } from '@babel/types'
+import {
+  ArrayExpression,
+  Expression,
+  ObjectExpression,
+  ObjectProperty,
+  StringLiteral,
+} from '@babel/types'
 import { SCALE_MAP, THEME_MAP } from './constants'
 import { normalizeScale, normalizeStyle } from './utils'
 
@@ -138,4 +144,19 @@ export const buildThemedResponsiveScales = (scaleProp: ObjectProperty) => {
   })
 
   return [mobileScales, mediaQueryObjs]
+}
+
+export const buildThemedVariantStyles = (variantObj: ObjectProperty) => {
+  const variantsExp = variantObj.value as ObjectExpression
+  const variants = variantsExp.properties as ObjectProperty[]
+
+  return variants.map(v => {
+    const name = v.key.name as string
+    const value = v.value as StringLiteral
+    const themeKey = value.value
+
+    return t.spreadElement(
+      t.memberExpression(t.identifier(`theme.${name}`), t.identifier(themeKey))
+    )
+  })
 }
