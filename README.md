@@ -23,17 +23,17 @@ Use theme aware style props on any JSX element using Emotion.
     - [Variables in responsive styles](#variables-in-responsive-styles)
   - [Use negative values](#use-negative-values)
     - [Negative values with variables and functions](#negative-values-with-variables-and-functions)
-  - [Use custom variants // TODO with adapters.](#use-custom-variants--todo-with-adapters)
+  - [Use styleModifier props](#use-stylemodifier-props)
+  - [Use custom variants](#use-custom-variants)
   - [Use styleScale props](#use-stylescale-props)
     - [Variables in styleScale props](#variables-in-stylescale-props)
       - [Referencing theme values in styleScale props](#referencing-theme-values-in-stylescale-props)
     - [Defining scales in your theme](#defining-scales-in-your-theme)
   - [Stripping props from HTML and JSX](#stripping-props-from-html-and-jsx)
-- [Other gotchas](#other-gotchas)
+- [Gotchas](#gotchas)
   - [Breakpoints](#breakpoints)
   - [Nested theme properties](#nested-theme-properties)
   - [Incompatible with `defaultProps`](#incompatible-with-defaultprops)
-  - [Incompatible with components built with `styled-system`](#incompatible-with-components-built-with-styled-system)
   - [Incompatible with theme keys that start with `-` (hypen)](#incompatible-with-theme-keys-that-start-with---hypen)
 - [License](#license)
 
@@ -195,7 +195,7 @@ Opt out of setting a value for a breakpoint by using `null`.
 ```
 
 Responsive arrays will generate styles according to the breakpoints defined in
-your babel config. See [breakpoints](#breakpoints) for more info.
+the `mediaQueries` key in your `theme`.
 
 #### Variables in responsive styles
 
@@ -261,10 +261,21 @@ const Box = ({ isNegative }) => {
 }
 ```
 
-### Use custom variants // TODO with adapters.
+### Use styleModifier props
 
-Custom variants and style props can be defined in the babel plugin options under
-`variants`. See below for an example config:
+Every style prop has a `Hover`, `Focus`, and `Active` modifier that is
+available. For example, if you want to apply a style to `opacity` when an
+element is being hovered, use the `opacityHover` prop.
+
+```jsx
+// I will be 50% opacity on mouse hover!
+<div opacity={1} opacityHover={0.5} />
+```
+
+### Use custom variants
+
+Custom variants and style props can be defined in the base babel plugin options
+under `variants`. See below for an example config
 
 ```js
 // babel.config.js
@@ -284,7 +295,7 @@ module.exports = {
 }
 ```
 
-The above config will tell `babel-plugin-style-props` to transpile the
+The above config will tell the base `babel-plugin-style-props` to transpile the
 `boxStyle` prop on any JSX element to properties in the `css` prop.
 
 ```jsx
@@ -392,7 +403,7 @@ const myBadScale = ['xl', 'l', null, 'xl']
 
 Any dynamic array passed to a `styleScale` prop has access to the non-scaled
 `theme` equivalent. This means that if you are passing a dynamic array to the
-`colorScale` prop, it will first check if that `colorsScales` property exists,
+`colorScale` prop, it will first check if that `colorScales` property exists,
 fallback and check normal `colors`, then finally use the raw value if neither
 would work.
 
@@ -404,7 +415,7 @@ const theme = {
   colors: {
     primary: 'red'
   }
-  colorsScale: {
+  colorScales: {
     secondary: ['blue', 'green', 'black', 'white']
   }
 }
@@ -449,7 +460,7 @@ const theme = {
 ### Stripping props from HTML and JSX
 
 If you would like this babel plugin to strip all style-props from your resulting
-code and HTML, specify `shouldStrip` in your plugin options.
+JSX and HTML, specify `shouldStrip` in your plugin options.
 
 ```js
 // babel.config.js
@@ -462,12 +473,17 @@ module.exports = {
         shouldStrip: true,
       },
     ],
-    'babel-plugin-style-props-emotion',
+    [
+      'babel-plugin-style-props-emotion',
+      {
+        shouldStrip: true,
+      },
+    ],
   ],
 }
 ```
 
-## Other gotchas
+## Gotchas
 
 To achieve a similar API to `styled-system`/`theme-ui` without the performance
 cost, this plugin makes some opinionated decisions as to how you can structure
@@ -475,25 +491,9 @@ your theme.
 
 ### Breakpoints
 
-Breakpoints can **only** be configured in the Babel plugin options. See below
-for an example.
-
-```js
-// babel.config.js
-module.exports = {
-  presets: ['@babel/preset-env', '@babel/preset-react'],
-  plugins: [
-    [
-      'babel-plugin-style-props',
-      {
-        stylingLibrary: 'styled-components',
-        breakpoints: ['32rem', '60rem', '100rem'],
-      },
-    ],
-    'babel-plugin-styled-components',
-  ],
-}
-```
+Currently, this plugin only supports up to **5** breakpoints from your `theme`.
+The ability to specify the amount of breakpoints and mediaqueries will come in a
+future release.
 
 ### Nested theme properties
 
@@ -542,10 +542,10 @@ const theme = {
 ### Incompatible with `defaultProps`
 
 This plugin does not support specifying React's `defaultProps` for style props.
-`defaultProps` get injected into components at run-time, and therefore cannot be
-transpiled by our babel plugin.
+`defaultProps` get injected into components at runtime, and therefore cannot be
+transpiled at buildtime.
 
-If you are composing re-usable components with defaults using this plugin, it's
+If you are composing reusable components with defaults using this plugin, it's
 recommended to just set your defaults directly in conjunction with prop
 spreading.
 
@@ -568,15 +568,6 @@ const Example = () => {
   )
 }
 ```
-
-### Incompatible with components built with `styled-system`
-
-Due to this plugin transpiling away style props, this plugin is incompatibile
-with any component that is built with `styled-system` **or** any component that
-uses any of the expected style prop names.
-
-> In general, a style prop is the `camelCase` equivalent of any CSS property
-> name.
 
 ### Incompatible with theme keys that start with `-` (hypen)
 
