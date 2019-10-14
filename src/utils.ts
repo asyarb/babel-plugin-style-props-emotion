@@ -1,6 +1,7 @@
 import { types as t } from '@babel/core'
 import {
   ArrayExpression,
+  Expression,
   JSXAttribute,
   JSXExpressionContainer,
   JSXSpreadAttribute,
@@ -49,6 +50,22 @@ export const extractStyleObjects = (styleProp: JSXAttribute) => {
     active,
     scales,
   }
+}
+
+export const normalizeStyle = (style: Expression) => {
+  let isNegative = false
+  let normalizedStyle = style
+
+  if (t.isStringLiteral(style) && style.value.startsWith('-')) {
+    isNegative = true
+    normalizedStyle = t.stringLiteral(style.value.substring(1))
+  }
+
+  if (t.isBinaryExpression(style)) {
+    console.log(style)
+  }
+
+  return { normalizedStyle, isNegative }
 }
 
 export const normalizeScale = (scale: ArrayExpression) => {

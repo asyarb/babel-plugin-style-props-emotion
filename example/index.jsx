@@ -9,13 +9,24 @@ export const Example = () => {
             {
               margin: '-large',
             },
+            {
+              margin: '-xlarge',
+            },
+            {
+              margin: 'medium',
+            },
+            {
+              margin: 'large',
+            },
           ],
           hover: [{}],
           focus: [{}],
           active: [{}],
         },
         extensions: {
-          scales: {},
+          scales: {
+            padding: ['-large'],
+          },
         },
       }}
     />

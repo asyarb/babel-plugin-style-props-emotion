@@ -220,7 +220,7 @@ const myArray = ['1rem', '2rem', '3rem']
 If you need to dynamically style a responsive array, please see
 [Use styleScale props](#use-stylescale-props).
 
-### Use negative values // TODO in adapters
+### Use negative values
 
 When a style prop has keys that are defined in a `<ThemeProvider>`, you can
 negate them by prefixing them with a '-' (hyphen).

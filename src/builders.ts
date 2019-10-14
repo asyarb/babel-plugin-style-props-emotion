@@ -1,12 +1,7 @@
 import { types as t } from '@babel/core'
-import {
-  ArrayExpression,
-  Expression,
-  ObjectExpression,
-  ObjectProperty,
-} from '@babel/types'
+import { ArrayExpression, Expression, ObjectExpression, ObjectProperty } from '@babel/types'
 import { SCALE_MAP, THEME_MAP } from './constants'
-import { normalizeScale } from './utils'
+import { normalizeScale, normalizeStyle } from './utils'
 
 export const buildThemedResponsiveStyles = (
   objProp: ObjectProperty,
@@ -26,14 +21,24 @@ export const buildThemedResponsiveStyles = (
       const key = THEME_MAP[baseKey] || baseKey
       const value = style.value as Expression
 
-      const themedStyle = t.objectProperty(
-        t.identifier(baseKey),
-        t.callExpression(t.identifier('__getStyle'), [
-          t.identifier('theme'),
-          t.stringLiteral(key),
-          value,
-        ])
-      )
+      const { normalizedStyle, isNegative } = normalizeStyle(value)
+
+      let getStyleCall = t.callExpression(t.identifier('__getStyle'), [
+        t.identifier('theme'),
+        t.stringLiteral(key),
+        normalizedStyle,
+      ])
+
+      if (isNegative) {
+        //@ts-ignore
+        getStyleCall = t.binaryExpression(
+          '+',
+          t.stringLiteral('-'),
+          getStyleCall
+        )
+      }
+
+      let themedStyle = t.objectProperty(t.identifier(baseKey), getStyleCall)
 
       breakpointStyles.push(themedStyle)
     })
@@ -86,15 +91,31 @@ export const buildThemedResponsiveScales = (scaleProp: ObjectProperty) => {
 
     normalizedScaleArr.forEach((style, i) => {
       const isMobile = i === 0
-      const themedStyle = t.objectProperty(
-        t.identifier(baseKey),
-        t.callExpression(t.identifier('__getScaleStyle'), [
+      const { normalizedStyle, isNegative } = normalizeStyle(style)
+
+      let getScaleStyleCall = t.callExpression(
+        t.identifier('__getScaleStyle'),
+        [
           t.identifier('theme'),
           t.stringLiteral(key),
           t.stringLiteral(fallbackKey),
-          style,
+          normalizedStyle,
           t.numericLiteral(i),
-        ])
+        ]
+      )
+
+      if (isNegative) {
+        //@ts-ignore
+        getScaleStyleCall = t.binaryExpression(
+          '+',
+          t.stringLiteral('-'),
+          getScaleStyleCall
+        )
+      }
+
+      const themedStyle = t.objectProperty(
+        t.identifier(baseKey),
+        getScaleStyleCall
       )
 
       if (isMobile) mobileScales.push(themedStyle)
