@@ -9,14 +9,16 @@ import pkg from './package.json'
 const IS_PROD = process.env.NODE_ENV === 'production'
 
 export default {
-  input: 'src/index.ts',
-  output: [
-    {
-      file: pkg.main,
-      format: 'cjs',
-      sourcemap: true,
-    },
-  ],
+  input: {
+    index: 'src/index.ts',
+    runtime: 'src/runtime.ts',
+  },
+  output: {
+    entryFileNames: '[name].js',
+    format: 'cjs',
+    dir: 'dist',
+    sourcemap: true,
+  },
   external: [...Object.keys(pkg.dependencies || {}), '@babel/core'],
   plugins: [
     progress(),
@@ -40,5 +42,5 @@ export default {
         },
         warnings: true,
       }),
-  ],
+  ].filter(Boolean),
 }

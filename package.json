@@ -2,7 +2,7 @@
   "name": "babel-plugin-style-props-emotion",
   "version": "0.1.2",
   "description": "The adapter to utilize style-props with the Emotion CSS-in-JS library.",
-  "main": "dist/index.js",
+  "main": "index.js",
   "typings": "dist/src/index.d.ts",
   "files": [
     "dist"
