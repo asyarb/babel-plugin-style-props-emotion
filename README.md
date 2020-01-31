@@ -35,6 +35,7 @@ Use theme aware style props on any JSX element using `emotion`.
   - [Nested theme properties](#nested-theme-properties)
   - [Incompatible with `defaultProps`](#incompatible-with-defaultprops)
   - [Incompatible with theme keys that start with `-` (hypen)](#incompatible-with-theme-keys-that-start-with---hypen)
+  - [Incompatible with pre-existing `css` props.](#incompatible-with-pre-existing-css-props)
 - [License](#license)
 
 ## Features
@@ -573,6 +574,12 @@ const Example = () => {
 
 This plugin relies on the hyphen preceeding a theme key to determine the
 negation of a scale.
+
+### Incompatible with pre-existing `css` props.
+
+This plugin is currently incompatible with existing `css` props on components.
+In a future release, it will handle statically merging your prop-based styles
+with the one's defined in the `css` prop.
 
 ## License
 
