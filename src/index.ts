@@ -1,15 +1,24 @@
+import * as BabelTypes from '@babel/types'
 import { NodePath, types as t } from '@babel/core'
 import { JSXAttribute, JSXOpeningElement, Program } from '@babel/types'
+
 import pkg from '../package.json'
-import { Babel, PluginOptions } from '../types'
 import {
   buildThemedResponsiveScales,
   buildThemedResponsiveStyles,
   buildThemedVariantStyles,
 } from './builders'
-import { DEFAULT_OPTIONS } from './constants'
+import { DEFAULT_OPTIONS, THEME_IDENTIFIER } from './constants'
 import { mergeMobileStyles, mergeResponsiveStyles } from './mergers'
 import { extractStyleObjects, extractStyleProp, stripStyleProp } from './utils'
+
+export interface Babel {
+  types: typeof BabelTypes
+}
+export type StylePropExpression = BabelTypes.Expression | null
+export type PluginOptions = {
+  stripProp: boolean
+}
 
 let fileHasStylePropsInJSX: boolean
 
@@ -67,14 +76,20 @@ const jsxOpeningElementVisitor = {
 
     if (options.stripProp) path.node.attributes = stripStyleProp(allProps)
 
-    const cssObj = t.objectExpression([
+    const cssObjExpression = t.objectExpression([
       ...mergedMobile,
       ...mergedResponsive,
       ...variantStyles,
     ])
+
+    const cssArrowFunction = t.arrowFunctionExpression(
+      [t.identifier(THEME_IDENTIFIER)],
+      cssObjExpression
+    )
+
     const cssProp = t.jsxAttribute(
       t.jsxIdentifier('css'),
-      t.jsxExpressionContainer(cssObj)
+      t.jsxExpressionContainer(cssArrowFunction)
     )
 
     path.node.attributes.push(cssProp)

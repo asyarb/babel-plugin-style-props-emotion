@@ -3,7 +3,7 @@ import React from 'react'
 export const Example = () => {
   return (
     <div
-      p={['1rem', '2rem', '3rem', '4rem']}
+      someOtherProp={false}
       __styleProps__={{
         css: {
           base: [
@@ -31,7 +31,9 @@ export const Example = () => {
           scales: {
             margin: ['xl'],
           },
-          variants: {},
+          variants: {
+            boxStyle: 'lastNoMargin',
+          },
         },
       }}
     />

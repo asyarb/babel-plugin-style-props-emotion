@@ -6,7 +6,7 @@ import {
   ObjectProperty,
   StringLiteral,
 } from '@babel/types'
-import { SCALE_MAP, THEME_MAP } from './constants'
+import { SCALE_MAP, THEME_MAP, THEME_IDENTIFIER } from './constants'
 import { normalizeScale, normalizeStyle } from './utils'
 
 export const buildThemedResponsiveStyles = (
@@ -30,7 +30,7 @@ export const buildThemedResponsiveStyles = (
       const { normalizedStyle, isNegative } = normalizeStyle(value)
 
       let getStyleCall = t.callExpression(t.identifier('__getStyle'), [
-        t.identifier('theme'),
+        t.identifier(THEME_IDENTIFIER),
         t.stringLiteral(key),
         normalizedStyle,
       ])
@@ -89,8 +89,8 @@ export const buildThemedResponsiveScales = (scaleProp: ObjectProperty) => {
 
   scales.forEach(scale => {
     const baseKey = scale.key.name as string
-    const key = SCALE_MAP[baseKey] || baseKey
-    const fallbackKey = THEME_MAP[baseKey] || baseKey
+    const key = SCALE_MAP[baseKey] ?? baseKey
+    const fallbackKey = THEME_MAP[baseKey] ?? baseKey
 
     const scaleArr = scale.value as ArrayExpression
     const normalizedScaleArr = normalizeScale(scaleArr) as Expression[]
@@ -102,7 +102,7 @@ export const buildThemedResponsiveScales = (scaleProp: ObjectProperty) => {
       let getScaleStyleCall = t.callExpression(
         t.identifier('__getScaleStyle'),
         [
-          t.identifier('theme'),
+          t.identifier(THEME_IDENTIFIER),
           t.stringLiteral(key),
           t.stringLiteral(fallbackKey),
           normalizedStyle,
@@ -156,7 +156,10 @@ export const buildThemedVariantStyles = (variantObj: ObjectProperty) => {
     const themeKey = value.value
 
     return t.spreadElement(
-      t.memberExpression(t.identifier(`theme.${name}`), t.identifier(themeKey))
+      t.memberExpression(
+        t.identifier(`${THEME_IDENTIFIER}.${name}`),
+        t.identifier(themeKey)
+      )
     )
   })
 }

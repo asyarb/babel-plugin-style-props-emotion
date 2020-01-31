@@ -1,12 +1,15 @@
+type StyleProp = string | number
+type ScaleProp = string[] | number[]
+
 type Theme = {
   [key: string]: {
-    [key: string]: string | number | string[] | number[]
+    [key: string]: StyleProp | ScaleProp
   }
 }
 
 type ScaleTheme = {
   [key: string]: {
-    [key: string]: string[] | number[]
+    [key: string]: ScaleProp
   }
 }
 

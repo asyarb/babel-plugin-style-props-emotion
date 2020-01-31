@@ -1,17 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`kitchen sink handles a large amount of scale and style props 1`] = `
-"import _css from \\"@emotion/css\\";
+"import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
 import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
-import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
 
 const Example = () => {
   const array = ['l', 'l', 'm', 'm', 'xl'];
   const variable = 'huge';
   return ___EmotionJSX(\\"div\\", {
-    css:
-    /*#__PURE__*/
-    _css({
+    css: theme => ({
       display: __getStyle(theme, \\"display\\", 'flex'),
       fontSize: __getStyle(theme, \\"fontSizes\\", '1rem'),
       color: __getStyle(theme, \\"colors\\", 'green'),
@@ -56,21 +53,18 @@ const Example = () => {
         paddingTop: __getScaleStyle(theme, \\"spaceScales\\", \\"space\\", 'xxl', 4),
         paddingBottom: __getScaleStyle(theme, \\"spaceScales\\", \\"space\\", 'xxl', 4)
       }
-    }, \\"label:Example;\\")
+    })
   });
 };"
 `;
 
 exports[`modifiers handles modifier props 1`] = `
-"import _css from \\"@emotion/css\\";
+"import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
 import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
-import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
 
 const Example = () => {
   return ___EmotionJSX(\\"div\\", {
-    css:
-    /*#__PURE__*/
-    _css({
+    css: theme => ({
       color: __getStyle(theme, \\"colors\\", 'red'),
       \\"&:hover\\": {
         color: __getStyle(theme, \\"colors\\", 'blue')
@@ -81,21 +75,18 @@ const Example = () => {
       \\"&:active\\": {
         color: __getStyle(theme, \\"colors\\", 'purple')
       }
-    }, \\"label:Example;\\")
+    })
   });
 };"
 `;
 
 exports[`modifiers handles responsive modifier props 1`] = `
-"import _css from \\"@emotion/css\\";
+"import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
 import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
-import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
 
 const Example = () => {
   return ___EmotionJSX(\\"div\\", {
-    css:
-    /*#__PURE__*/
-    _css({
+    css: theme => ({
       \\"&:hover\\": {
         color: __getStyle(theme, \\"colors\\", 'red')
       },
@@ -104,22 +95,19 @@ const Example = () => {
           color: __getStyle(theme, \\"colors\\", 'green')
         }
       }
-    }, \\"label:Example;\\")
+    })
   });
 };"
 `;
 
 exports[`modifiers supports merging with an existing __styleProps__ with modifier props 1`] = `
-"import _css from \\"@emotion/css\\";
+"import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
 import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
-import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
 
 const Example = () => {
   const color = 'red';
   return ___EmotionJSX(\\"div\\", {
-    css:
-    /*#__PURE__*/
-    _css({
+    css: theme => ({
       color: __getStyle(theme, \\"colors\\", 'red'),
       margin: __getStyle(theme, \\"space\\", '3rem'),
       padding: __getScaleStyle(theme, \\"spaceScales\\", \\"space\\", 'xl', 0),
@@ -156,22 +144,19 @@ const Example = () => {
       [theme.mediaQueries[3]]: {
         padding: __getScaleStyle(theme, \\"spaceScales\\", \\"space\\", 'xl', 4)
       }
-    }, \\"label:Example;\\")
+    })
   });
 };"
 `;
 
 exports[`modifiers supports variable usage in modifier props 1`] = `
-"import _css from \\"@emotion/css\\";
+"import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
 import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
-import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
 
 const Example = () => {
   const color = 'red';
   return ___EmotionJSX(\\"div\\", {
-    css:
-    /*#__PURE__*/
-    _css({
+    css: theme => ({
       \\"&:hover\\": {
         color: __getStyle(theme, \\"colors\\", color)
       },
@@ -180,21 +165,18 @@ const Example = () => {
           color: __getStyle(theme, \\"colors\\", 'green')
         }
       }
-    }, \\"label:Example;\\")
+    })
   });
 };"
 `;
 
 exports[`scale prop parsing handles responsive scale props 1`] = `
-"import _css from \\"@emotion/css\\";
+"import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
 import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
-import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
 
 const Example = () => {
   return ___EmotionJSX(\\"div\\", {
-    css:
-    /*#__PURE__*/
-    _css({
+    css: theme => ({
       margin: __getScaleStyle(theme, \\"spaceScales\\", \\"space\\", 'l', 0),
       [theme.mediaQueries[0]]: {
         margin: __getScaleStyle(theme, \\"spaceScales\\", \\"space\\", 'l', 1)
@@ -208,21 +190,18 @@ const Example = () => {
       [theme.mediaQueries[3]]: {
         margin: __getScaleStyle(theme, \\"spaceScales\\", \\"space\\", 'm', 4)
       }
-    }, \\"label:Example;\\")
+    })
   });
 };"
 `;
 
 exports[`scale prop parsing handles scale props 1`] = `
-"import _css from \\"@emotion/css\\";
+"import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
 import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
-import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
 
 const Example = () => {
   return ___EmotionJSX(\\"div\\", {
-    css:
-    /*#__PURE__*/
-    _css({
+    css: theme => ({
       margin: __getScaleStyle(theme, \\"spaceScales\\", \\"space\\", 'l', 0),
       [theme.mediaQueries[0]]: {
         margin: __getScaleStyle(theme, \\"spaceScales\\", \\"space\\", 'l', 1)
@@ -236,22 +215,19 @@ const Example = () => {
       [theme.mediaQueries[3]]: {
         margin: __getScaleStyle(theme, \\"spaceScales\\", \\"space\\", 'l', 4)
       }
-    }, \\"label:Example;\\")
+    })
   });
 };"
 `;
 
 exports[`scale prop parsing handles variable arrays in scale props 1`] = `
-"import _css from \\"@emotion/css\\";
+"import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
 import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
-import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
 
 const Example = () => {
   const array = ['l', 'l', 'm', 'm', 'xl'];
   return ___EmotionJSX(\\"div\\", {
-    css:
-    /*#__PURE__*/
-    _css({
+    css: theme => ({
       margin: __getScaleStyle(theme, \\"spaceScales\\", \\"space\\", array, 0),
       [theme.mediaQueries[0]]: {
         margin: __getScaleStyle(theme, \\"spaceScales\\", \\"space\\", array, 1)
@@ -265,21 +241,18 @@ const Example = () => {
       [theme.mediaQueries[3]]: {
         margin: __getScaleStyle(theme, \\"spaceScales\\", \\"space\\", array, 4)
       }
-    }, \\"label:Example;\\")
+    })
   });
 };"
 `;
 
 exports[`scale prop parsing merges scale props with an existing __styleProps__ prop 1`] = `
-"import _css from \\"@emotion/css\\";
+"import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
 import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
-import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
 
 const Example = () => {
   return ___EmotionJSX(\\"div\\", {
-    css:
-    /*#__PURE__*/
-    _css({
+    css: theme => ({
       color: __getStyle(theme, \\"colors\\", 'red'),
       padding: __getScaleStyle(theme, \\"spaceScales\\", \\"space\\", 'xl', 0),
       margin: __getScaleStyle(theme, \\"spaceScales\\", \\"space\\", 'l', 0),
@@ -308,39 +281,33 @@ const Example = () => {
         padding: __getScaleStyle(theme, \\"spaceScales\\", \\"space\\", 'xl', 4),
         margin: __getScaleStyle(theme, \\"spaceScales\\", \\"space\\", 'l', 4)
       }
-    }, \\"label:Example;\\")
+    })
   });
 };"
 `;
 
 exports[`style prop parsing handles expressions in style props 1`] = `
-"import _css from \\"@emotion/css\\";
+"import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
 import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
-import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
 
 const Example = ({
   isTest
 }) => {
   return ___EmotionJSX(\\"div\\", {
-    css:
-    /*#__PURE__*/
-    _css({
+    css: theme => ({
       margin: __getStyle(theme, \\"space\\", isTest ? '3rem' : '4rem')
-    }, \\"label:Example;\\")
+    })
   });
 };"
 `;
 
 exports[`style prop parsing handles responsive style props 1`] = `
-"import _css from \\"@emotion/css\\";
+"import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
 import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
-import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
 
 const Example = () => {
   return ___EmotionJSX(\\"div\\", {
-    css:
-    /*#__PURE__*/
-    _css({
+    css: theme => ({
       margin: __getStyle(theme, \\"space\\", '3rem'),
       display: __getStyle(theme, \\"display\\", 'grid'),
       [theme.mediaQueries[0]]: {
@@ -350,54 +317,45 @@ const Example = () => {
       [theme.mediaQueries[2]]: {
         paddingTop: __getStyle(theme, \\"space\\", '6rem')
       }
-    }, \\"label:Example;\\")
+    })
   });
 };"
 `;
 
 exports[`style prop parsing handles style props 1`] = `
-"import _css from \\"@emotion/css\\";
+"import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
 import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
-import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
 
 const Example = () => {
   return ___EmotionJSX(\\"div\\", {
-    css:
-    /*#__PURE__*/
-    _css({
+    css: theme => ({
       margin: __getStyle(theme, \\"space\\", '3rem'),
       lineHeight: __getStyle(theme, \\"lineHeights\\", 1.5)
-    }, \\"label:Example;\\")
+    })
   });
 };"
 `;
 
 exports[`style prop parsing handles style props on multiple elements 1`] = `
-"import _css from \\"@emotion/css\\";
+"import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
 import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
-import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
 
 const Example = () => {
   return ___EmotionJSX(\\"div\\", {
-    css:
-    /*#__PURE__*/
-    _css({
+    css: theme => ({
       margin: __getStyle(theme, \\"space\\", '1rem')
-    }, \\"label:Example;\\")
+    })
   }, ___EmotionJSX(\\"span\\", {
-    css:
-    /*#__PURE__*/
-    _css({
+    css: theme => ({
       padding: __getStyle(theme, \\"space\\", '2rem')
-    }, \\"label:Example;\\")
+    })
   }));
 };"
 `;
 
 exports[`style prop parsing handles variable usage in style props 1`] = `
-"import _css from \\"@emotion/css\\";
+"import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
 import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
-import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
 
 const Example = ({
   size
@@ -407,9 +365,7 @@ const Example = ({
   const myFunction = () => '4rem';
 
   return ___EmotionJSX(\\"div\\", {
-    css:
-    /*#__PURE__*/
-    _css({
+    css: theme => ({
       margin: __getStyle(theme, \\"space\\", variable),
       [theme.mediaQueries[0]]: {
         margin: __getStyle(theme, \\"space\\", size)
@@ -417,21 +373,18 @@ const Example = ({
       [theme.mediaQueries[1]]: {
         margin: __getStyle(theme, \\"space\\", myFunction())
       }
-    }, \\"label:Example;\\")
+    })
   });
 };"
 `;
 
 exports[`style prop parsing merges parsed props with an existing __styleProps__ prop 1`] = `
-"import _css from \\"@emotion/css\\";
+"import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
 import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
-import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
 
 const Example = () => {
   return ___EmotionJSX(\\"div\\", {
-    css:
-    /*#__PURE__*/
-    _css({
+    css: theme => ({
       color: __getStyle(theme, \\"colors\\", 'red'),
       padding: __getStyle(theme, \\"space\\", '1rem'),
       margin: __getScaleStyle(theme, \\"spaceScales\\", \\"space\\", 'xl', 0),
@@ -459,7 +412,7 @@ const Example = () => {
       [theme.mediaQueries[3]]: {
         margin: __getScaleStyle(theme, \\"spaceScales\\", \\"space\\", 'xl', 4)
       }
-    }, \\"label:Example;\\")
+    })
   });
 };"
 `;

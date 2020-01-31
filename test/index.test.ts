@@ -2,6 +2,7 @@ import { PluginItem, transformSync } from '@babel/core'
 import react from '@babel/preset-react'
 import emotionPreset from '@emotion/babel-preset-css-prop'
 import styleProps from 'babel-plugin-style-props'
+
 import emotionAdapter from '../src'
 
 const presets = [react, emotionPreset]
@@ -83,10 +84,6 @@ describe('style prop parsing', () => {
 
     expect(code).toMatchSnapshot()
   })
-
-  it.skip('strips style props if `shouldStrip` is set', () => {})
-
-  it.skip('does not strip non style props if `shouldStrip` is set', () => {})
 
   it('merges parsed props with an existing __styleProps__ prop', () => {
     const example = `

@@ -1,6 +1,6 @@
 # Babel Plugin Style Props Emotion <!-- omit in toc -->
 
-Use theme aware style props on any JSX element using Emotion.
+Use theme aware style props on any JSX element using `emotion`.
 
 ```jsx
 <h1 mt={0} mb={4} color="primary" textDecoration="underline">
@@ -40,11 +40,11 @@ Use theme aware style props on any JSX element using Emotion.
 ## Features
 
 - Support for **all** CSS properties.
-- Use values from your `<ThemeProvider>` and `theme`, or just use plain CSS
-  units and properties.
+- Use values from your `<ThemeProvider>`, or just use plain CSS units and
+  properties.
 - Use arrays for responsive styles.
 - Customizable variants.
-- Optionally removes all style props from rendered HTML & JSX.
+- Optionally remove all style props from rendered HTML & JSX.
 
 ## Getting Started
 
@@ -94,12 +94,12 @@ const YourApp = () => (
 #### Minimal theme
 
 For a barebones theme to start working with, see this
-[example](docs/examples/minimalTheme.js).
+[example](docs/minimalTheme.js).
 
 #### Tailwind
 
 For a TailwindCSS copycat theme to get started with, see this
-[example](docs/examples/tailwindTheme.js).
+[example](docs/tailwindTheme.js).
 
 Your `theme` should follow the `styled-system` specification that you can find
 detailed [here](https://styled-system.com/theme-specification).
