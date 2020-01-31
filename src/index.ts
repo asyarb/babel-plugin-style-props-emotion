@@ -20,12 +20,10 @@ export type PluginOptions = {
   stripProp: boolean
 }
 
-let fileHasStylePropsInJSX: boolean
+let fileHasStylePropsInJSX = false
 
 const jsxOpeningElementVisitor = {
   JSXOpeningElement(path: NodePath<JSXOpeningElement>, options: PluginOptions) {
-    fileHasStylePropsInJSX = false
-
     const allProps = path.node.attributes
     if (!allProps.length) return
 
