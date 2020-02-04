@@ -16,7 +16,7 @@ const plugins = [
       },
     },
   ],
-  [emotionAdapter, { stripProp: true }],
+  [emotionAdapter, { stripProps: true }],
 ]
 
 const parseCode = (example: string, plug?: PluginItem[]) =>

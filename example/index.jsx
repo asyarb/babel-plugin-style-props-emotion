@@ -3,7 +3,7 @@ import React from 'react'
 export const Example = () => {
   return (
     <div
-      someOtherProp={false}
+      as="h2"
       __styleProps__={{
         css: {
           base: [
@@ -11,26 +11,12 @@ export const Example = () => {
               color: 'red',
             },
           ],
-          hover: [
-            {
-              color: 'blue',
-            },
-          ],
-          focus: [
-            {
-              color: 'purple',
-            },
-          ],
-          active: [
-            {
-              color: 'green',
-            },
-          ],
+          hover: [{}],
+          focus: [{}],
+          active: [{}],
         },
         extensions: {
-          scales: {
-            margin: ['xl'],
-          },
+          scales: {},
           variants: {
             boxStyle: 'lastNoMargin',
           },

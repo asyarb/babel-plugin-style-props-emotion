@@ -1,6 +1,12 @@
 import * as BabelTypes from '@babel/types'
 import { NodePath, types as t } from '@babel/core'
-import { JSXAttribute, JSXOpeningElement, Program } from '@babel/types'
+import {
+  JSXAttribute,
+  JSXOpeningElement,
+  Program,
+  JSXIdentifier,
+} from '@babel/types'
+import htmlTagNames from 'html-tag-names'
 
 import pkg from '../package.json'
 import {
@@ -17,10 +23,10 @@ export interface Babel {
 }
 export type StylePropExpression = BabelTypes.Expression | null
 export type PluginOptions = {
-  stripProp: boolean
+  stripProps: boolean
 }
 
-let fileHasStylePropsInJSX = false
+let hasStylePropsInJSX = false
 
 const jsxOpeningElementVisitor = {
   JSXOpeningElement(path: NodePath<JSXOpeningElement>, options: PluginOptions) {
@@ -30,7 +36,7 @@ const jsxOpeningElementVisitor = {
     const styleProp = extractStyleProp(allProps) as JSXAttribute
     if (!styleProp) return
 
-    fileHasStylePropsInJSX = true
+    hasStylePropsInJSX = true
 
     const {
       base,
@@ -72,7 +78,7 @@ const jsxOpeningElementVisitor = {
       responsiveActive
     )
 
-    if (options.stripProp) path.node.attributes = stripStyleProp(allProps)
+    if (options.stripProps) path.node.attributes = stripStyleProp(allProps)
 
     const cssObjExpression = t.objectExpression([
       ...mergedMobile,
@@ -90,6 +96,26 @@ const jsxOpeningElementVisitor = {
       t.jsxExpressionContainer(cssArrowFunction)
     )
 
+    // TODO: Extract this to a dedi function
+    const elementTagName = (path.node.name as JSXIdentifier).name
+
+    // Traverse back up the path to the root program scope.
+    let parent = path.parentPath
+    while (!t.isProgram(parent.parentPath)) {
+      parent = parent.parentPath
+    }
+
+    const styledId = path.scope.generateUidIdentifier('Styled' + elementTagName)
+
+    parent.insertBefore(
+      t.variableDeclaration('const', [
+        t.variableDeclarator(
+          styledId,
+          t.callExpression(t.identifier('styled'), [t.identifier('help')])
+        ),
+      ])
+    )
+
     path.node.attributes.push(cssProp)
   },
 }
@@ -104,20 +130,18 @@ export default (_babel: Babel, opts: PluginOptions) => {
         enter(path: NodePath<Program>) {
           path.traverse(jsxOpeningElementVisitor, options)
         },
-        exit(path: NodePath<Body>) {
-          if (!fileHasStylePropsInJSX) return
+        exit(path: NodePath<Program>) {
+          if (!hasStylePropsInJSX) return
 
-          //@ts-ignore
-          path.unshiftContainer(
-            'body',
+          path.insertBefore(
             t.importDeclaration(
               [
                 t.importSpecifier(
-                  t.identifier('__getStyle'),
+                  path.scope.generateUidIdentifier('getStyle'),
                   t.identifier('getStyle')
                 ),
                 t.importSpecifier(
-                  t.identifier('__getScaleStyle'),
+                  path.scope.generateUidIdentifier('getScaleStyle'),
                   t.identifier('getScaleStyle')
                 ),
               ],

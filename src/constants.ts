@@ -1,7 +1,7 @@
 import { PluginOptions } from './'
 
 export const DEFAULT_OPTIONS = {
-  stripProp: false,
+  stripProps: false,
 } as PluginOptions
 
 export const STYLE_PROPS_ID = '__styleProps__'

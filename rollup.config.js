@@ -1,4 +1,4 @@
-import json from 'rollup-plugin-json'
+import json from '@rollup/plugin-json'
 import progress from 'rollup-plugin-progress'
 import sourceMaps from 'rollup-plugin-sourcemaps'
 import { terser } from 'rollup-plugin-terser'
@@ -22,9 +22,7 @@ export default {
   external: [...Object.keys(pkg.dependencies || {}), '@babel/core'],
   plugins: [
     progress(),
-    json({
-      exclude: ['node_modules/**'],
-    }),
+    json(),
     typescript({
       typescript: require('typescript'),
       clean: IS_PROD,
