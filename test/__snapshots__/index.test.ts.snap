@@ -1,7 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`kitchen sink handles a large amount of scale and style props 1`] = `
-"import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
+"import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
+import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
 
 const Example = () => {
   const array = ['l', 'l', 'm', 'm', 'xl'];
@@ -58,7 +59,8 @@ const Example = () => {
 `;
 
 exports[`modifiers handles modifier props 1`] = `
-"import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
+"import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
+import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
 
 const Example = () => {
   return ___EmotionJSX(\\"div\\", {
@@ -79,7 +81,8 @@ const Example = () => {
 `;
 
 exports[`modifiers handles responsive modifier props 1`] = `
-"import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
+"import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
+import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
 
 const Example = () => {
   return ___EmotionJSX(\\"div\\", {
@@ -98,7 +101,8 @@ const Example = () => {
 `;
 
 exports[`modifiers supports merging with an existing __styleProps__ with modifier props 1`] = `
-"import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
+"import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
+import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
 
 const Example = () => {
   const color = 'red';
@@ -146,7 +150,8 @@ const Example = () => {
 `;
 
 exports[`modifiers supports variable usage in modifier props 1`] = `
-"import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
+"import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
+import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
 
 const Example = () => {
   const color = 'red';
@@ -166,7 +171,8 @@ const Example = () => {
 `;
 
 exports[`scale prop parsing handles responsive scale props 1`] = `
-"import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
+"import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
+import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
 
 const Example = () => {
   return ___EmotionJSX(\\"div\\", {
@@ -190,7 +196,8 @@ const Example = () => {
 `;
 
 exports[`scale prop parsing handles scale props 1`] = `
-"import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
+"import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
+import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
 
 const Example = () => {
   return ___EmotionJSX(\\"div\\", {
@@ -214,7 +221,8 @@ const Example = () => {
 `;
 
 exports[`scale prop parsing handles variable arrays in scale props 1`] = `
-"import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
+"import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
+import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
 
 const Example = () => {
   const array = ['l', 'l', 'm', 'm', 'xl'];
@@ -239,7 +247,8 @@ const Example = () => {
 `;
 
 exports[`scale prop parsing merges scale props with an existing __styleProps__ prop 1`] = `
-"import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
+"import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
+import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
 
 const Example = () => {
   return ___EmotionJSX(\\"div\\", {
@@ -278,7 +287,8 @@ const Example = () => {
 `;
 
 exports[`style prop parsing handles expressions in style props 1`] = `
-"import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
+"import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
+import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
 
 const Example = ({
   isTest
@@ -292,7 +302,8 @@ const Example = ({
 `;
 
 exports[`style prop parsing handles responsive style props 1`] = `
-"import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
+"import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
+import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
 
 const Example = () => {
   return ___EmotionJSX(\\"div\\", {
@@ -326,7 +337,8 @@ const Example = () => {
 `;
 
 exports[`style prop parsing handles style props on multiple elements 1`] = `
-"import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
+"import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
+import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
 
 const Example = () => {
   return ___EmotionJSX(\\"div\\", {
@@ -342,7 +354,8 @@ const Example = () => {
 `;
 
 exports[`style prop parsing handles variable usage in style props 1`] = `
-"import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
+"import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
+import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
 
 const Example = ({
   size
@@ -366,7 +379,8 @@ const Example = ({
 `;
 
 exports[`style prop parsing merges parsed props with an existing __styleProps__ prop 1`] = `
-"import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
+"import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
+import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
 
 const Example = () => {
   return ___EmotionJSX(\\"div\\", {
