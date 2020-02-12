@@ -20,7 +20,7 @@ export type PluginOptions = {
   stripProp: boolean
 }
 
-let hasImportedRuntime = false
+let hasImportedRuntimeForProgram: boolean | null
 
 const jsxOpeningElementVisitor = {
   JSXOpeningElement(path: NodePath<JSXOpeningElement>, options: PluginOptions) {
@@ -100,12 +100,12 @@ export default (_babel: Babel, opts: PluginOptions) => {
     visitor: {
       Program: {
         enter(path: NodePath<Program>) {
+          hasImportedRuntimeForProgram = false
+
           path.traverse(jsxOpeningElementVisitor, options)
         },
         exit(path: NodePath<Body>) {
-          if (hasImportedRuntime) return
-
-          hasImportedRuntime = true
+          if (hasImportedRuntimeForProgram) return
 
           //@ts-ignore
           path.unshiftContainer(
@@ -124,6 +124,8 @@ export default (_babel: Babel, opts: PluginOptions) => {
               t.stringLiteral(pkg.name + '/runtime')
             )
           )
+
+          hasImportedRuntimeForProgram = true
         },
       },
     },
