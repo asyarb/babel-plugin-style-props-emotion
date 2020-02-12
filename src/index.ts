@@ -102,12 +102,14 @@ export default (_babel: Babel, opts: PluginOptions) => {
         enter(path: NodePath<Program>) {
           path.traverse(jsxOpeningElementVisitor, options)
         },
-        exit(path: NodePath<Program>) {
+        exit(path: NodePath<Body>) {
           if (hasImportedRuntime) return
 
           hasImportedRuntime = true
 
-          path.insertBefore(
+          //@ts-ignore
+          path.unshiftContainer(
+            'body',
             t.importDeclaration(
               [
                 t.importSpecifier(
