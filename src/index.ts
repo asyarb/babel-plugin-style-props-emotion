@@ -113,11 +113,11 @@ export default (_babel: Babel, opts: PluginOptions) => {
             t.importDeclaration(
               [
                 t.importSpecifier(
-                  path.scope.generateUidIdentifier('getStyle'),
+                  t.identifier('__getStyle'),
                   t.identifier('getStyle')
                 ),
                 t.importSpecifier(
-                  path.scope.generateUidIdentifier('getScaleStyle'),
+                  t.identifier('__getScaleStyle'),
                   t.identifier('getScaleStyle')
                 ),
               ],
