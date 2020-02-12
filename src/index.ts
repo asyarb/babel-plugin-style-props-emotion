@@ -20,7 +20,7 @@ export type PluginOptions = {
   stripProp: boolean
 }
 
-let fileHasStylePropsInJSX = false
+let hasImportedRuntime = false
 
 const jsxOpeningElementVisitor = {
   JSXOpeningElement(path: NodePath<JSXOpeningElement>, options: PluginOptions) {
@@ -29,8 +29,6 @@ const jsxOpeningElementVisitor = {
 
     const styleProp = extractStyleProp(allProps) as JSXAttribute
     if (!styleProp) return
-
-    fileHasStylePropsInJSX = true
 
     const {
       base,
@@ -104,20 +102,20 @@ export default (_babel: Babel, opts: PluginOptions) => {
         enter(path: NodePath<Program>) {
           path.traverse(jsxOpeningElementVisitor, options)
         },
-        exit(path: NodePath<Body>) {
-          if (!fileHasStylePropsInJSX) return
+        exit(path: NodePath<Program>) {
+          if (hasImportedRuntime) return
 
-          //@ts-ignore
-          path.unshiftContainer(
-            'body',
+          hasImportedRuntime = true
+
+          path.insertBefore(
             t.importDeclaration(
               [
                 t.importSpecifier(
-                  t.identifier('__getStyle'),
+                  path.scope.generateUidIdentifier('getStyle'),
                   t.identifier('getStyle')
                 ),
                 t.importSpecifier(
-                  t.identifier('__getScaleStyle'),
+                  path.scope.generateUidIdentifier('getScaleStyle'),
                   t.identifier('getScaleStyle')
                 ),
               ],
