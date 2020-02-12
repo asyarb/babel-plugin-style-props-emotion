@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.8](https://github.com/asyarb/babel-plugin-style-props-emotion/compare/v0.1.7...v0.1.8) (2020-02-12)
+
+
+### Bug Fixes
+
+* imports per program ([6f991a9](https://github.com/asyarb/babel-plugin-style-props-emotion/commit/6f991a985b73e8b2a3d2acea09d576c95140d912))
+
 ### [0.1.7](https://github.com/asyarb/babel-plugin-style-props-emotion/compare/v0.1.6...v0.1.7) (2020-02-12)
 
 
