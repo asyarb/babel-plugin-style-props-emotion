@@ -312,7 +312,7 @@ const Example = () => {
 `;
 
 exports[`style prop parsing handles style props 1`] = `
-"import { getStyle as _getStyle, getScaleStyle as _getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
+"import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
 import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
 
 const Example = () => {
