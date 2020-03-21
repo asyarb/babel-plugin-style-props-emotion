@@ -1,8 +1,7 @@
 import json from 'rollup-plugin-json'
 import progress from 'rollup-plugin-progress'
-import sourceMaps from 'rollup-plugin-sourcemaps'
 import { terser } from 'rollup-plugin-terser'
-import typescript from 'rollup-plugin-typescript2'
+import typescript from '@rollup/plugin-typescript'
 
 import pkg from './package.json'
 
@@ -25,12 +24,7 @@ export default {
     json({
       exclude: ['node_modules/**'],
     }),
-    typescript({
-      typescript: require('typescript'),
-      clean: IS_PROD,
-      objectHashIgnoreUnknownHack: true,
-    }),
-    sourceMaps(),
+    typescript(),
     IS_PROD &&
       terser({
         sourcemap: true,

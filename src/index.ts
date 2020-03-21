@@ -1,6 +1,10 @@
-import * as BabelTypes from '@babel/types'
 import { NodePath, types as t } from '@babel/core'
-import { JSXAttribute, JSXOpeningElement, Program } from '@babel/types'
+import {
+  JSXAttribute,
+  JSXOpeningElement,
+  Program,
+  Expression,
+} from '@babel/types'
 
 import pkg from '../package.json'
 import {
@@ -12,12 +16,9 @@ import { DEFAULT_OPTIONS, THEME_IDENTIFIER } from './constants'
 import { mergeMobileStyles, mergeResponsiveStyles } from './mergers'
 import { extractStyleObjects, extractStyleProp, stripStyleProp } from './utils'
 
-export interface Babel {
-  types: typeof BabelTypes
-}
-export type StylePropExpression = BabelTypes.Expression | null
+export type StylePropExpression = Expression | null
 export type PluginOptions = {
-  stripProp: boolean
+  stripInjectedProp: boolean
 }
 
 let hasImportedRuntimeForProgram: boolean | null
@@ -70,7 +71,8 @@ const jsxOpeningElementVisitor = {
       responsiveActive
     )
 
-    if (options.stripProp) path.node.attributes = stripStyleProp(allProps)
+    if (options.stripInjectedProp)
+      path.node.attributes = stripStyleProp(allProps)
 
     const cssObjExpression = t.objectExpression([
       ...mergedMobile,
@@ -92,7 +94,7 @@ const jsxOpeningElementVisitor = {
   },
 }
 
-export default (_babel: Babel, opts: PluginOptions) => {
+export default (_babel: object, opts: PluginOptions) => {
   const options = { ...DEFAULT_OPTIONS, ...opts }
 
   return {
