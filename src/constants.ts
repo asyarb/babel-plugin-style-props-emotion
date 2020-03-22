@@ -1,13 +1,15 @@
 import { PluginOptions } from './'
 
 export const DEFAULT_OPTIONS = {
-  stripProp: false,
+  stripInjectedProp: false,
 } as PluginOptions
 
 export const STYLE_PROPS_ID = '__styleProps__'
 export const THEME_IDENTIFIER = 'theme'
 
-export const THEME_MAP = {
+type StyleMap = { [key: string]: string }
+
+export const THEME_MAP: StyleMap = {
   // SPACE
   margin: 'space',
   marginTop: 'space',
@@ -93,11 +95,9 @@ export const THEME_MAP = {
   // SHADOW
   boxShadow: 'shadows',
   textShadow: 'shadows',
-} as {
-  [key: string]: string
 }
 
-export const SCALE_MAP = {
+export const SCALE_MAP: StyleMap = {
   // SPACE
   margin: 'spaceScales',
   marginTop: 'spaceScales',
@@ -183,6 +183,4 @@ export const SCALE_MAP = {
   // SHADOW
   boxShadow: 'shadowScales',
   textShadow: 'shadowScales',
-} as {
-  [key: string]: string
 }

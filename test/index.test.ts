@@ -10,7 +10,6 @@ const plugins = [
   [
     styleProps,
     {
-      stripProps: true,
       variants: {
         boxStyle: 'boxStyles',
       },
