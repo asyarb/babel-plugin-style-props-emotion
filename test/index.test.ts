@@ -85,7 +85,7 @@ it('parses scale styles', () => {
 })
 
 it('parses psuedoClasses', () => {
-  const example = `const Comp = () => <div sx={{ colorHover: 'red' }} />`
+  const example = `const Comp = () => <div sx={{ colorHover: 'red', colorFocus: 'green', colorActive: 'pink' }} />`
   const code = parseCode(example)
 
   expect(code).toMatchInlineSnapshot(`
@@ -94,11 +94,19 @@ it('parses psuedoClasses', () => {
     
     const Comp = () => ___EmotionJSX(\\"div\\", {
       sx: {
-        colorHover: 'red'
+        colorHover: 'red',
+        colorFocus: 'green',
+        colorActive: 'pink'
       },
       css: theme => ({
         \\"&:hover\\": {
           color: __getStyle(theme, \\"colors\\", 'red')
+        },
+        \\"&:focus\\": {
+          color: __getStyle(theme, \\"colors\\", 'green')
+        },
+        \\"&:active\\": {
+          color: __getStyle(theme, \\"colors\\", 'pink')
         }
       })
     });"

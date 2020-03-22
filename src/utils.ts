@@ -8,6 +8,7 @@ import {
   NumericLiteral,
   ObjectExpression,
   ObjectProperty,
+  Identifier,
 } from '@babel/types'
 import { STYLE_PROPS_ID } from './constants'
 
@@ -30,29 +31,23 @@ export const extractStyleProp = (
   })
 }
 
+type ExtractResult = { [key: string]: ObjectProperty }
 export const extractStyleObjects = (styleProp: JSXAttribute) => {
   const propValue = styleProp.value as JSXExpressionContainer
   const styles = propValue.expression as ObjectExpression
 
-  const [
-    base,
-    variants,
-    spreads,
-    hover,
-    focus,
-    active,
-    scales,
-  ] = styles.properties as ObjectProperty[]
+  const result: ExtractResult = styles.properties.reduce((acc, property) => {
+    if (!t.isObjectProperty(property)) return acc
 
-  return {
-    base,
-    hover,
-    spreads,
-    focus,
-    active,
-    scales,
-    variants,
-  }
+    const id = property.key as Identifier
+    const name = id.name as string
+
+    acc[name] = property
+
+    return acc
+  }, {} as ExtractResult)
+
+  return result
 }
 
 export const normalizeStyle = (style: Expression) => {
