@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.9](https://github.com/asyarb/babel-plugin-style-props-emotion/compare/v0.1.8...v0.1.9) (2020-03-22)
+
+
+### Features
+
+* convert to scoped prop ([8e0a729](https://github.com/asyarb/babel-plugin-style-props-emotion/commit/8e0a729c964d42fbc41bbe3227b06694e578f6e7))
+
 ### [0.1.8](https://github.com/asyarb/babel-plugin-style-props-emotion/compare/v0.1.7...v0.1.8) (2020-02-12)
 
 
