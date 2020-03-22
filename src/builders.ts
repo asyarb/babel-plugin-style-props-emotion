@@ -22,7 +22,7 @@ export const buildThemedResponsiveStyles = (
 
     let breakpointStyles = [] as ObjectProperty[]
 
-    styles.forEach(style => {
+    styles.forEach((style) => {
       const baseKey = style.key.name
       const key = THEME_MAP[baseKey] || baseKey
       const value = style.value as Expression
@@ -81,13 +81,14 @@ export const buildThemedResponsiveStyles = (
 }
 
 export const buildThemedResponsiveScales = (scaleProp: ObjectProperty) => {
-  const value = scaleProp.value as ObjectExpression
+  const surroundingArray = scaleProp.value as ArrayExpression
+  const value = surroundingArray.elements[0] as ObjectExpression
   const scales = value.properties as ObjectProperty[]
 
   const mobileScales = [] as ObjectProperty[]
   const responsiveScales = [] as ObjectProperty[][]
 
-  scales.forEach(scale => {
+  scales.forEach((scale) => {
     const baseKey = scale.key.name as string
     const key = SCALE_MAP[baseKey] ?? baseKey
     const fallbackKey = THEME_MAP[baseKey] ?? baseKey
@@ -147,10 +148,11 @@ export const buildThemedResponsiveScales = (scaleProp: ObjectProperty) => {
 }
 
 export const buildThemedVariantStyles = (variantObj: ObjectProperty) => {
-  const variantsExp = variantObj.value as ObjectExpression
-  const variants = variantsExp.properties as ObjectProperty[]
+  const surroundingArray = variantObj.value as ArrayExpression
+  const value = surroundingArray.elements[0] as ObjectExpression
+  const variants = value.properties as ObjectProperty[]
 
-  return variants.map(v => {
+  return variants.map((v) => {
     const name = v.key.name as string
     const value = v.value as StringLiteral
     const themeKey = value.value

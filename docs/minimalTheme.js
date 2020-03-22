@@ -8,6 +8,7 @@ export default {
   fontWeights: {},
   letterSpacings: {},
   lineHeights: {},
+  mediaQueries: [],
   radii: {},
   shadows: {},
   sizes: {},

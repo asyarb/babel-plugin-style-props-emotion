@@ -1,4 +1,4 @@
-import { PluginItem, transformSync } from '@babel/core'
+import { transformSync, parse } from '@babel/core'
 import react from '@babel/preset-react'
 import emotionPreset from '@emotion/babel-preset-css-prop'
 import styleProps from 'babel-plugin-style-props'
@@ -10,322 +10,237 @@ const plugins = [
   [
     styleProps,
     {
-      stripProps: true,
       variants: {
         boxStyle: 'boxStyles',
       },
     },
   ],
-  [emotionAdapter, { stripProp: true }],
+  [emotionAdapter, { stripInjectedProp: true }],
 ]
 
-const parseCode = (example: string, plug?: PluginItem[]) =>
-  transformSync(example, { plugins: plug || plugins, presets })!.code
+const parseCode = (example: string) =>
+  transformSync(example, { plugins, presets })!.code
 
-describe('style prop parsing', () => {
-  it('handles style props', () => {
-    const example = `
-      const Example = () => {
-        return <div m='3rem' lineHeight={1.5} />
-      }
-    `
-    const code = parseCode(example)
+it('parses the styles', () => {
+  const example = `const Comp = () => <div sx={{ mb: '3rem', lineHeight: 4 }} />`
+  const code = parseCode(example)
 
-    expect(code).toMatchSnapshot()
-  })
+  expect(code).toMatchInlineSnapshot(`
+    "import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
+    import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
 
-  it('handles responsive style props', () => {
-    const example = `
-      const Example = () => {
-        return <div m={['3rem', '4rem']} display='grid' pt={[null, '4rem', null, '6rem']} />
-      }
-    `
-    const code = parseCode(example)
-
-    expect(code).toMatchSnapshot()
-  })
-
-  it('handles variable usage in style props', () => {
-    const example = `
-      const Example = ({ size }) => {
-        const variable = '3rem'
-        const myFunction = () => '4rem'
-        
-        return <div m={[variable, size, myFunction()]} />
-      }
-    `
-    const code = parseCode(example)
-
-    expect(code).toMatchSnapshot()
-  })
-
-  it('handles expressions in style props', () => {
-    const example = `
-      const Example = ({ isTest }) => {
-        return <div m={isTest ? '3rem' : '4rem'} />
-      }
-    `
-    const code = parseCode(example)
-
-    expect(code).toMatchSnapshot()
-  })
-
-  it('handles style props on multiple elements', () => {
-    const example = `
-      const Example = () => {
-        return (
-          <div m='1rem'>
-            <span p='2rem' />
-          </div>
-        )
-      }
-    `
-    const code = parseCode(example)
-
-    expect(code).toMatchSnapshot()
-  })
-
-  it('merges parsed props with an existing __styleProps__ prop', () => {
-    const example = `
-      const Example = () => {
-        return (
-          <div
-            p={['1rem', '2rem', '3rem', '4rem']}
-            __styleProps__={{
-              css: {
-                base: [
-                  {
-                    color: 'red',
-                  },
-                ],
-                hover: [
-                  {
-                    color: 'blue',
-                  },
-                ],
-                focus: [
-                  {
-                    color: 'purple',
-                  },
-                ],
-                active: [
-                  {
-                    color: 'green',
-                  },
-                ],
-              },
-              extensions: {
-                scales: {
-                  margin: ['xl'],
-                },
-                variants: {},
-              },
-            }}
-          />
-        )
-      }
-    `
-    const code = parseCode(example)
-
-    expect(code).toMatchSnapshot()
-  })
+    const Comp = () => ___EmotionJSX(\\"div\\", {
+      sx: {
+        mb: '3rem',
+        lineHeight: 4
+      },
+      css: theme => ({
+        marginBottom: __getStyle(theme, \\"space\\", '3rem'),
+        lineHeight: __getStyle(theme, \\"lineHeights\\", 4)
+      })
+    });"
+  `)
 })
 
-describe('scale prop parsing', () => {
-  it('handles scale props', () => {
-    const example = `
-      const Example = () => {
-        return <div mScale='l' />
-      }
-    `
-    const code = parseCode(example)
+it('parses scale styles', () => {
+  const example = `const Comp = () => <div sx={{ mxScale: 'l', mbScale: ['l', null, 'xl'] }} />`
+  const code = parseCode(example)
 
-    expect(code).toMatchSnapshot()
-  })
-
-  it('handles responsive scale props', () => {
-    const example = `
-      const Example = () => {
-        return <div mScale={['l', null, 'm']} />
-      }
-    `
-    const code = parseCode(example)
-
-    expect(code).toMatchSnapshot()
-  })
-
-  it('handles variable arrays in scale props', () => {
-    const example = `
-      const Example = () => {
-        const array = ['l', 'l', 'm', 'm', 'xl']
-
-        return <div mScale={array} />
-      }
-    `
-    const code = parseCode(example)
-
-    expect(code).toMatchSnapshot()
-  })
-
-  it('merges scale props with an existing __styleProps__ prop', () => {
-    const example = `
-      const Example = () => {
-        return (
-          <div
-            mScale='l'
-            __styleProps__={{
-              css: {
-                base: [
-                  {
-                    color: 'red',
-                  },
-                ],
-                hover: [
-                  {
-                    color: 'blue',
-                  },
-                ],
-                focus: [
-                  {
-                    color: 'purple',
-                  },
-                ],
-                active: [
-                  {
-                    color: 'green',
-                  },
-                ],
-              },
-              extensions: {
-                scales: {
-                  padding: ['xl'],
-                },
-                variants: {},
-              },
-            }} 
-          />
-        )
-      }
-    `
-    const code = parseCode(example)
-
-    expect(code).toMatchSnapshot()
-  })
+  expect(code).toMatchInlineSnapshot(`
+    "import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
+    import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
+    
+    const Comp = () => ___EmotionJSX(\\"div\\", {
+      sx: {
+        mxScale: 'l',
+        mbScale: ['l', null, 'xl']
+      },
+      css: theme => ({
+        marginLeft: __getScaleStyle(theme, \\"spaceScales\\", \\"space\\", 'l', 0),
+        marginRight: __getScaleStyle(theme, \\"spaceScales\\", \\"space\\", 'l', 0),
+        marginBottom: __getScaleStyle(theme, \\"spaceScales\\", \\"space\\", 'l', 0),
+        [theme.mediaQueries[0]]: {
+          marginLeft: __getScaleStyle(theme, \\"spaceScales\\", \\"space\\", 'l', 1),
+          marginRight: __getScaleStyle(theme, \\"spaceScales\\", \\"space\\", 'l', 1),
+          marginBottom: __getScaleStyle(theme, \\"spaceScales\\", \\"space\\", 'l', 1)
+        },
+        [theme.mediaQueries[1]]: {
+          marginLeft: __getScaleStyle(theme, \\"spaceScales\\", \\"space\\", 'l', 2),
+          marginRight: __getScaleStyle(theme, \\"spaceScales\\", \\"space\\", 'l', 2),
+          marginBottom: __getScaleStyle(theme, \\"spaceScales\\", \\"space\\", 'xl', 2)
+        },
+        [theme.mediaQueries[2]]: {
+          marginLeft: __getScaleStyle(theme, \\"spaceScales\\", \\"space\\", 'l', 3),
+          marginRight: __getScaleStyle(theme, \\"spaceScales\\", \\"space\\", 'l', 3),
+          marginBottom: __getScaleStyle(theme, \\"spaceScales\\", \\"space\\", 'xl', 3)
+        },
+        [theme.mediaQueries[3]]: {
+          marginLeft: __getScaleStyle(theme, \\"spaceScales\\", \\"space\\", 'l', 4),
+          marginRight: __getScaleStyle(theme, \\"spaceScales\\", \\"space\\", 'l', 4),
+          marginBottom: __getScaleStyle(theme, \\"spaceScales\\", \\"space\\", 'xl', 4)
+        }
+      })
+    });"
+  `)
 })
 
-describe('modifiers', () => {
-  it('handles modifier props', () => {
-    const example = `
-      const Example = () => {
-        return <div color='red' colorHover='blue' colorFocus='green' colorActive='purple' />
-      }
-    `
-    const code = parseCode(example)
+it('parses psuedoClasses', () => {
+  const example = `const Comp = () => <div sx={{ colorHover: 'red' }} />`
+  const code = parseCode(example)
 
-    expect(code).toMatchSnapshot()
-  })
-
-  it('handles responsive modifier props', () => {
-    const example = `
-      const Example = () => {
-        return <div colorHover={['red', null, 'green']} />
-      }
-    `
-    const code = parseCode(example)
-
-    expect(code).toMatchSnapshot()
-  })
-
-  it('supports variable usage in modifier props', () => {
-    const example = `
-      const Example = () => {
-        const color = 'red'
-
-        return <div colorHover={[color, null, 'green']} />
-      }
-    `
-    const code = parseCode(example)
-
-    expect(code).toMatchSnapshot()
-  })
-
-  it('supports merging with an existing __styleProps__ with modifier props', () => {
-    const example = `
-      const Example = () => {
-        const color = 'red'
-
-        return (
-          <div
-            m='3rem'
-            mHover='4rem'
-            mFocus={['5rem', '6rem']}
-            mActive={['6rem', '7rem', null, '8rem']} 
-            __styleProps__={{
-              css: {
-                base: [
-                  {
-                    color: 'red',
-                  },
-                ],
-                hover: [
-                  {
-                    color: 'blue',
-                  },
-                ],
-                focus: [
-                  {
-                    color: 'purple',
-                  },
-                ],
-                active: [
-                  {
-                    color: 'green',
-                  },
-                ],
-              },
-              extensions: {
-                scales: {
-                  padding: ['xl'],
-                },
-                variants: {},
-              },
-            }}
-          />
-        )
-      }
-    `
-    const code = parseCode(example)
-
-    expect(code).toMatchSnapshot()
-  })
+  expect(code).toMatchInlineSnapshot(`
+    "import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
+    import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
+    
+    const Comp = () => ___EmotionJSX(\\"div\\", {
+      sx: {
+        colorHover: 'red'
+      },
+      css: theme => ({
+        \\"&:hover\\": {
+          color: __getStyle(theme, \\"colors\\", 'red')
+        }
+      })
+    });"
+  `)
 })
 
-describe('kitchen sink', () => {
-  it('handles a large amount of scale and style props', () => {
-    const example = `
-      const Example = () => {
-        const array = ['l', 'l', 'm', 'm', 'xl']
-        const variable = 'huge'
+it('parses responsive arrays', () => {
+  const example = `const Comp = () => <div sx={{ color: ['red', 'blue', null, 'green'] }} />`
+  const code = parseCode(example)
 
-        return (
-          <div 
-            display='flex'
-            mScale={array}
-            fontSize={['1rem', '2rem', null, '3rem']} 
-            color='green'
-            colorHover='red'
-            colorFocus={['red', 'green', 'blue']}
-            lineHeight={1.5} 
-            pyScale={['l', null, 'xxl']}
-            textTransform='uppercase'
-            fontFamily='system-ui'
-            maxWidth={variable}
-          />
-        )
-      }
-    `
-    const code = parseCode(example)
+  expect(code).toMatchInlineSnapshot(`
+    "import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
+    import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
+    
+    const Comp = () => ___EmotionJSX(\\"div\\", {
+      sx: {
+        color: ['red', 'blue', null, 'green']
+      },
+      css: theme => ({
+        color: __getStyle(theme, \\"colors\\", 'red'),
+        [theme.mediaQueries[0]]: {
+          color: __getStyle(theme, \\"colors\\", 'blue')
+        },
+        [theme.mediaQueries[2]]: {
+          color: __getStyle(theme, \\"colors\\", 'green')
+        }
+      })
+    });"
+  `)
+})
 
-    expect(code).toMatchSnapshot()
-  })
+it('handles variable usage', () => {
+  const example = `
+    const Comp = ({ size }) => {
+      const variable = '3rem'
+      const myFunction = () => '4rem'
+
+      return <div sx={{ mb: [variable, size, myFunction()] }} />
+    } 
+  `
+  const code = parseCode(example)
+
+  expect(code).toMatchInlineSnapshot(`
+    "import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
+    import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
+    
+    const Comp = ({
+      size
+    }) => {
+      const variable = '3rem';
+    
+      const myFunction = () => '4rem';
+    
+      return ___EmotionJSX(\\"div\\", {
+        sx: {
+          mb: [variable, size, myFunction()]
+        },
+        css: theme => ({
+          marginBottom: __getStyle(theme, \\"space\\", variable),
+          [theme.mediaQueries[0]]: {
+            marginBottom: __getStyle(theme, \\"space\\", size)
+          },
+          [theme.mediaQueries[1]]: {
+            marginBottom: __getStyle(theme, \\"space\\", myFunction())
+          }
+        })
+      });
+    };"
+  `)
+})
+
+it('parses expressions', () => {
+  const example = `const Comp = ({ isRed }) => <div sx={{ color: isRed ? 'red' : 'blue' }} />`
+  const code = parseCode(example)
+
+  expect(code).toMatchInlineSnapshot(`
+    "import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
+    import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
+    
+    const Comp = ({
+      isRed
+    }) => ___EmotionJSX(\\"div\\", {
+      sx: {
+        color: isRed ? 'red' : 'blue'
+      },
+      css: theme => ({
+        color: __getStyle(theme, \\"colors\\", isRed ? 'red' : 'blue')
+      })
+    });"
+  `)
+})
+
+it('parses multiple elements', () => {
+  const example = `
+    const Comp = () => {
+      return (
+        <div sx={{ mt: '1rem' }}>
+          <span sx={{ textAlign: 'left' }} /> 
+        </div>
+      )
+    } 
+  `
+  const code = parseCode(example)
+
+  expect(code).toMatchInlineSnapshot(`
+    "import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
+    import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
+    
+    const Comp = () => {
+      return ___EmotionJSX(\\"div\\", {
+        sx: {
+          mt: '1rem'
+        },
+        css: theme => ({
+          marginTop: __getStyle(theme, \\"space\\", '1rem')
+        })
+      }, ___EmotionJSX(\\"span\\", {
+        sx: {
+          textAlign: 'left'
+        },
+        css: theme => ({
+          textAlign: __getStyle(theme, \\"textAlign\\", 'left')
+        })
+      }));
+    };"
+  `)
+})
+
+it('parses variants', () => {
+  const example = `const Comp = () => <div sx={{ boxStyle: 'primary' }} />`
+  const code = parseCode(example)
+
+  expect(code).toMatchInlineSnapshot(`
+    "import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
+    import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
+    
+    const Comp = () => ___EmotionJSX(\\"div\\", {
+      sx: {
+        boxStyle: 'primary'
+      },
+      css: theme => ({ ...theme.boxStyle.primary
+      })
+    });"
+  `)
 })

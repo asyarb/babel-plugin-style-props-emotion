@@ -1,11 +1,9 @@
 # Babel Plugin Style Props Emotion <!-- omit in toc -->
 
-Use theme aware style props on any JSX element using `emotion`.
+Use responsive and theme aware style props on any JSX element using `emotion`.
 
 ```jsx
-<h1 mt={0} mb={4} color="primary" textDecoration="underline">
-  Hello
-</h1>
+<h1 sx={{ mt: 0, mb: 4, color: ['primary', 'secondary'] }}>Hello World!</h1>
 ```
 
 - [Features](#features)
@@ -14,7 +12,6 @@ Use theme aware style props on any JSX element using `emotion`.
   - [Configure Babel](#configure-babel)
   - [Setup your `<ThemeProvider>`](#setup-your-themeprovider)
     - [Minimal theme](#minimal-theme)
-    - [Tailwind](#tailwind)
 - [What this plugin does](#what-this-plugin-does)
 - [Usage](#usage)
   - [Use values from your theme](#use-values-from-your-theme)
@@ -25,27 +22,25 @@ Use theme aware style props on any JSX element using `emotion`.
     - [Negative values with variables and functions](#negative-values-with-variables-and-functions)
   - [Use styleModifier props](#use-stylemodifier-props)
   - [Use custom variants](#use-custom-variants)
-  - [Use styleScale props](#use-stylescale-props)
-    - [Variables in styleScale props](#variables-in-stylescale-props)
-      - [Referencing theme values in styleScale props](#referencing-theme-values-in-stylescale-props)
+  - [Using scales](#using-scales)
+    - [Variables in scales](#variables-in-scales)
+      - [Referencing theme values in scale styles](#referencing-theme-values-in-scale-styles)
     - [Defining scales in your theme](#defining-scales-in-your-theme)
-  - [Stripping props from HTML and JSX](#stripping-props-from-html-and-jsx)
+  - [Stripping the injected prop from HTML and JSX](#stripping-the-injected-prop-from-html-and-jsx)
 - [Gotchas](#gotchas)
   - [Breakpoints](#breakpoints)
   - [Nested theme properties](#nested-theme-properties)
   - [Incompatible with `defaultProps`](#incompatible-with-defaultprops)
   - [Incompatible with theme keys that start with `-` (hypen)](#incompatible-with-theme-keys-that-start-with---hypen)
-  - [Incompatible with pre-existing `css` props.](#incompatible-with-pre-existing-css-props)
 - [License](#license)
 
 ## Features
 
-- Support for **all** CSS properties.
-- Use values from your `<ThemeProvider>`, or just use plain CSS units and
-  properties.
+- Support for **all** valid CSS properties.
+- Use values from your `<ThemeProvider>`.
+- Use plain CSS units and values.
 - Use arrays for responsive styles.
 - Customizable variants.
-- Optionally remove all style props from rendered HTML & JSX.
 
 ## Getting Started
 
@@ -79,7 +74,7 @@ module.exports = {
 ### Setup your `<ThemeProvider>`
 
 Place your `<ThemeProvider>` component around your React app as you normally
-would, and pass your `theme` object.
+would, then pass your `theme` object.
 
 ```jsx
 import { ThemeProvider } from 'emotion-theming'
@@ -97,22 +92,17 @@ const YourApp = () => (
 For a barebones theme to start working with, see this
 [example](docs/minimalTheme.js).
 
-#### Tailwind
-
-For a TailwindCSS copycat theme to get started with, see this
-[example](docs/tailwindTheme.js).
-
 Your `theme` should follow the `styled-system` specification that you can find
 detailed [here](https://styled-system.com/theme-specification).
 
 ## What this plugin does
 
-`babel-plugin-style-props-emotion` converts style props to values in a `css`
-prop. This allows `emotion` to parse the styles into CSS.
+`babel-plugin-style-props-emotion` converts styles in the `sx` prop to values in
+the `css` prop. This allows `emotion` to parse the styles into CSS.
 
 ```jsx
 // Your JSX
-<div color='red' px={5} />
+<div sx={{ color: 'red', px: 5 }} />
 
 // Output JSX (simplified)
 <div
@@ -126,13 +116,10 @@ prop. This allows `emotion` to parse the styles into CSS.
 
 ## Usage
 
-If you've used `styled-system` or other similar styling solutions, this plugin's
-usage should be familiar.
-
 ### Use values from your theme
 
 When colors, fonts, font sizes, a spacing scale, or other values are definied in
-a `<ThemeProvider>`, the values can be referenced by key in the props.
+a `<ThemeProvider>`, the values can be referenced by key.
 
 ```jsx
 // example theme
@@ -144,7 +131,7 @@ const theme = {
   },
 }
 
-<div color="primary" bg="muted" />
+<div sx={{ color: 'primary', bg: 'muted' }} />
 ```
 
 ### Use function calls, variables, and expressions in style props
@@ -156,25 +143,33 @@ computed properties. Consider the following example:
 const Box = () => {
   const myColor = 'primary'
   const myFunction = () => 'muted'
-  const boolean = true
-  const size = 'small'
+  const isLarge = true
+  const fallbackSize = 'small'
 
-  return <div color={myColor} bg={myFunction()} mt={boolean ? 'large' : size} />
+  return (
+    <div
+      sx={{
+        color: myColor,
+        bg: myFunction(),
+        mt: isLarge ? 'large' : fallbackSize,
+      }}
+    />
+  )
 }
 
 // transpiles to something like:
 const Box = () => {
   const myColor = 'primary'
   const myFunction = () => 'muted'
-  const boolean = true
-  const size = 'small'
+  const isLarge = true
+  const fallbackSize = 'small'
 
   return (
     <div
       css={theme => ({
         color: theme.colors[myColor], // theme.colors.primary
         backgroundColor: theme.colors[myFunction()], // theme.colors.muted
-        marginTop: theme.space[boolean ? 'large' : size], // theme.space.large || theme.space.small
+        marginTop: theme.space[isLarge ? 'large' : fallbackSize], // theme.space.large || theme.space.small
       })}
     />
   )
@@ -186,17 +181,17 @@ const Box = () => {
 You can use arrays to specify responsive styles.
 
 ```jsx
-<div width={['100%', '50%', '25%']} />
+<div sx={{ width: '100%', '50%', '25%' }} />
 ```
 
-Opt out of setting a value for a breakpoint by using `null`.
+Opt a breakpoint by using `null`.
 
 ```jsx
-<div width={[null, '50%', null, '25%']} />
+<div sx={{ width: [null, '50%', null, '25%'] }} />
 ```
 
-Responsive arrays will generate styles according to the breakpoints defined in
-the `mediaQueries` key in your `theme`.
+Responsive arrays will generate styles according to the order of breakpoints
+defined in the `mediaQueries` key in your `theme`.
 
 #### Variables in responsive styles
 
@@ -208,14 +203,14 @@ const myValue = '1rem'
 const myArray = ['1rem', '2rem', '3rem']
 
 // This works:
-<div m={[myValue, '2rem', '3rem']} />
+<div sx={{ m: [myValue, '2rem', '3rem'] }}  />
 
 // This does not:
-<div m={myArray} />
+<div sx={{ m: myArray }} />
 ```
 
 If you need to dynamically style a responsive array, please see
-[Use styleScale props](#use-stylescale-props).
+[Use styleScale props](#using-scales).
 
 ### Use negative values
 
@@ -233,7 +228,7 @@ const theme = {
 // theme alias
 theme.space.large = theme.space[1]
 
-<div mt="-large" mr={-1} />
+<div sx={{ mt: '-large', mr: -1 }} />
 
 // transpiles to something like:
 <div
@@ -258,25 +253,25 @@ a theme value.
 const Box = ({ isNegative }) => {
   const mySpace = isNegative ? '-large' : 'large'
 
-  return <div mx={mySpace}>
+  return <div sx={{ mx: mySpace }}>
 }
 ```
 
 ### Use styleModifier props
 
-Every style prop has a `Hover`, `Focus`, and `Active` modifier that is
+Every valid CSS rule has a `Hover`, `Focus`, and `Active` modifier that is
 available. For example, if you want to apply a style to `opacity` when an
-element is being hovered, use the `opacityHover` prop.
+element is being hovered, use the `opacityHover` key.
 
 ```jsx
 // I will be 50% opacity on mouse hover!
-<div opacity={1} opacityHover={0.5} />
+<div sx={{ opacity: 1, opacityHover: 0.5 }} />
 ```
 
 ### Use custom variants
 
 Custom variants and style props can be defined in the base babel plugin options
-under `variants`. See below for an example config
+under `variants`. See below for an example config:
 
 ```js
 // babel.config.js
@@ -311,7 +306,7 @@ const theme = {
 }
 
 // `boxStyle` on an element:
-<div boxStyle="primary" />
+<div sx={{ boxStyle: 'primary' }} />
 
 // will transpile to something like:
 <div css={theme => ({ ...theme.boxStyles.primary })} />
@@ -320,11 +315,11 @@ const theme = {
 <div css={theme => ({ color: 'white', backgroundColor: '#f0f' })} />
 ```
 
-### Use styleScale props
+### Using scales
 
-Use `scale` variants for any themeable style prop. `scale` style props allow you
-to specify a set of responsive values for a style prop in a single key, or a via
-an array of keys and/or values.
+Use `scale` variants for any CSS style. `scale` styles allow you to specify a
+set of responsive values for a style prop in a single key, or via an array of
+keys and/or values.
 
 This is useful for styles that usually change at every breakpoint such as font
 sizes or space values, or when you need to dynamically assign breakpoint values
@@ -333,7 +328,7 @@ since normal style props cannot accept dynamic arrays.
 See below for an example:
 
 ```jsx
-<div mScale="xl" />
+<div sx={{ mScale: 'xl' }} />
 
 // transpiles to something like
 <div
@@ -352,12 +347,11 @@ See below for an example:
 />
 ```
 
-Like with normal style props, `scale` props can be overridden per breakpoint
-using an array, be negated with a `-`, and can use `null` to skip over
-breakpoints.
+Like with normal styles, `scale` styles can be overridden per breakpoint using
+an array, be negated with a hyphen, and can use `null` to skip over breakpoints.
 
 ```jsx
-<div mScale={['xl', null, '-l']} />
+<div sx={{ mScale: ['xl', null, '-l']}}  />
 
 // transpiles to something like
 <div
@@ -378,35 +372,36 @@ breakpoints.
 
 Note how the `xl` scale still persists through the second and third breakpoint.
 Using scales, we can persist a scale for as long as we need it, then override it
-when necessary!
+when necessary.
 
-#### Variables in styleScale props
+#### Variables in scales
 
-Any variable passed to a `styleScale` prop **must** be an array (or function
-returning an array). This array also currently cannot contain `null` to skip
-over breakpoints. If you need to skip a breakpoint, just pass the same key again
-in the responsive array.
+Any variable passed to a scale style **must** be an array or expression that
+returns an array. Variable based arrays currently cannot contain `null` to skip
+over breakpoints. If you need to skip a breakpoint, just provide the same key
+again in the responsive array.
 
 Consider this example:
 
 ```jsx
 
 // This works:
-const myScale = ['xl', 'l', 'l', 'xl']
-<div mScale={myScale} />
+const correctArray = ['xl', 'l', 'l', 'xl']
+<div sx={{ mScale: correctArray }} />
 
 // This does not work:
-const myBadScale = ['xl', 'l', null, 'xl']
-<div mScale={myBadScale} />
+const badArray = ['xl', 'l', null, 'xl']
+<div sx={{ mScale: badArray }} />
 ```
 
-##### Referencing theme values in styleScale props
+##### Referencing theme values in scale styles
 
-Any dynamic array passed to a `styleScale` prop has access to the non-scaled
-`theme` equivalent. This means that if you are passing a dynamic array to the
-`colorScale` prop, it will first check if that `colorScales` property exists,
-fallback and check normal `colors`, then finally use the raw value if neither
-would work.
+Any dynamic array passed to a scale has access to the non-scaled `theme` object
+equivalent.
+
+If you are passing a dynamic array to the `colorScale` prop, it will first check
+if a `colorScales` property exists, then fallback and check `colors`, then
+finally use the raw value if neither would work.
 
 Consider this example:
 
@@ -422,7 +417,7 @@ const theme = {
 }
 
 const colors = ['primary', 'secondary', 'secondary', '#fff']
-<div colorScale={colors} />
+<div sx={{ colorScale: colors }} />
 
 // results in something like
 <div
@@ -445,7 +440,7 @@ const colors = ['primary', 'secondary', 'secondary', '#fff']
 
 Scales follow the same theme specification as detailed above, except each theme
 key has `Scales` appended to it. For example, to define the scales for font
-sizes, it would exist in your theme as `fontSizesScales`. The associated prop
+sizes, it would exist in your theme as `fontSizesScales`. The associated key
 would be `fontSizeScale`.
 
 ```jsx
@@ -455,29 +450,25 @@ const theme = {
   }
 }
 
-<p fontSizeScale="l" />
+<p sx={{ fontSizeScale: "l" }} />
 ```
 
-### Stripping props from HTML and JSX
+### Stripping the injected prop from HTML and JSX
 
-If you would like this babel plugin to strip all style-props from your resulting
-JSX and HTML, specify `shouldStrip` in your plugin options.
+If you would like this babel plugin to strip it's internal injected prop from
+your resulting JSX and HTML, specify `stripInjectedProp` in the plugin options
+for the emotion adapter.
 
 ```js
 // babel.config.js
 module.exports = {
   presets: ['@babel/preset-env', '@babel/preset-react'],
   plugins: [
-    [
-      'babel-plugin-style-props',
-      {
-        shouldStrip: true,
-      },
-    ],
+    'babel-plugin-style-props',
     [
       'babel-plugin-style-props-emotion',
       {
-        shouldStrip: true,
+        stripInternalProp: true,
       },
     ],
   ],
@@ -493,8 +484,7 @@ your theme.
 ### Breakpoints
 
 Currently, this plugin only supports up to **5** breakpoints from your `theme`.
-The ability to specify the amount of breakpoints and mediaqueries will come in a
-future release.
+The ability to specify the amount of breakpoints will come in a future release.
 
 ### Nested theme properties
 
@@ -516,12 +506,12 @@ const theme = {
   },
 }
 
-<div color="red.light" bg="primary" />
+<div sx={{ color: "red.light", bg: "primary" }} />
 ```
 
-The above example will not work because we are accessing a third level of
-nesting for our `color` style prop. This is largely how this plugin eliminates
-the `styled-system`/`theme-ui` runtime cost.
+The above example will not work since we are accessing a third level of nesting
+for our `color`. This is largely how this plugin eliminates the
+`styled-system`/`theme-ui` runtime cost.
 
 If you want to have namespaced-like behavior, consider flatly namespacing your
 keys as a workaround.
@@ -552,19 +542,14 @@ spreading.
 
 ```jsx
 // Grid.js
-const Grid = ({ children, ...props }) => {
-  return (
-    <div display="grid" {...props}>
-      {children}
-    </div>
-  )
+const Grid = ({ children, sx }) => {
+  return <div sx={{ display: 'grid', ...sx }}>{children}</div>
 }
 
 const Example = () => {
   return (
-    <Grid gridTemplateColumns="1fr 1fr" gridColumnGap="1rem">
-      <div justifySelf="end">Default</div>
-      <div alignSelf="start">Props!</div>
+    <Grid sx={{ gridTemplateColumns: '1fr 1fr', columnGap: '1rem' }}>
+      <div sx={{ justifySelf: 'end' }}>Default Styles!</div>
     </Grid>
   )
 }
@@ -574,12 +559,6 @@ const Example = () => {
 
 This plugin relies on the hyphen preceeding a theme key to determine the
 negation of a scale.
-
-### Incompatible with pre-existing `css` props.
-
-This plugin is currently incompatible with existing `css` props on components.
-In a future release, it will handle statically merging your prop-based styles
-with the one's defined in the `css` prop.
 
 ## License
 
