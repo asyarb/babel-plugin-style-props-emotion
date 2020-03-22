@@ -1299,10 +1299,10 @@ babel-plugin-macros@^2.0.0:
     cosmiconfig "^5.2.0"
     resolve "^1.10.0"
 
-babel-plugin-style-props@^0.3.3:
-  version "0.3.3"
-  resolved "https://registry.yarnpkg.com/babel-plugin-style-props/-/babel-plugin-style-props-0.3.3.tgz#a4a01d33dcc8d677adf9dc804df900ca967cdcd5"
-  integrity sha512-kATbDDau5CnkhSZZqRcKFsYhDmBTq5R82MgE2fvVuou0NF53c3cTajUlem7q3kO+SMQfcRr/teSABznXlFEXVA==
+babel-plugin-style-props@^0.3.4:
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/babel-plugin-style-props/-/babel-plugin-style-props-0.3.4.tgz#dd578acc21a610239fd7b8b8ba09e341db5506e8"
+  integrity sha512-RSsMjw5xvNWENSEkR7nwhiSQ2ijKOXjm/0xBvLE0RIw/sdFPNh5Crta68GV2wEljPHPJRwgamcx6EKoI/ZAMxg==
   dependencies:
     known-css-properties "^0.18.0"
     lodash.camelcase "^4.3.0"

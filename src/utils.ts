@@ -20,7 +20,7 @@ import { STYLE_PROPS_ID } from './constants'
 export const extractStyleProp = (
   props: (JSXAttribute | JSXSpreadAttribute)[]
 ) => {
-  return props.find((prop) => {
+  return props.find(prop => {
     if (t.isJSXSpreadAttribute(prop)) return false
 
     const castProp = prop as JSXAttribute
@@ -37,6 +37,7 @@ export const extractStyleObjects = (styleProp: JSXAttribute) => {
   const [
     base,
     variants,
+    spreads,
     hover,
     focus,
     active,
@@ -46,6 +47,7 @@ export const extractStyleObjects = (styleProp: JSXAttribute) => {
   return {
     base,
     hover,
+    spreads,
     focus,
     active,
     scales,
@@ -87,7 +89,7 @@ export const normalizeScale = (scale: ArrayExpression) => {
 export const stripStyleProp = (
   props: (JSXAttribute | JSXSpreadAttribute)[]
 ) => {
-  return props.filter((prop) => {
+  return props.filter(prop => {
     if (t.isJSXSpreadAttribute(prop)) return true
 
     const propName = prop.name.name

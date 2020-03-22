@@ -532,26 +532,23 @@ const theme = {
 
 ### Incompatible with `defaultProps`
 
-This plugin does not support specifying React's `defaultProps` for style props.
-`defaultProps` get injected into components at runtime, and therefore cannot be
-transpiled at buildtime.
+This plugin does not support specifying React's `defaultProps` for default
+styles. `defaultProps` get injected into components at runtime, and therefore
+cannot be transpiled at buildtime.
 
 If you are composing reusable components with defaults using this plugin, it's
-recommended to just set your defaults directly in conjunction with prop
-spreading.
+recommended to just set your defaults directly. This babel plugin will handle
+merging `sx` objects on components like in the example below:
 
 ```jsx
 // Grid.js
-const Grid = ({ children, sx }) => {
-  return <div sx={{ display: 'grid', ...sx }}>{children}</div>
+const Grid = ({ children }) => {
+  return <div sx={{ display: 'grid' }}>{children}</div>
 }
 
+// => has display: grid; grid-tempalte-columns: 1fr 1fr; column-gap: 1rem;
 const Example = () => {
-  return (
-    <Grid sx={{ gridTemplateColumns: '1fr 1fr', columnGap: '1rem' }}>
-      <div sx={{ justifySelf: 'end' }}>Default Styles!</div>
-    </Grid>
-  )
+  return <Grid sx={{ gridTemplateColumns: '1fr 1fr', columnGap: '1rem' }} />
 }
 ```
 

@@ -244,3 +244,32 @@ it('parses variants', () => {
     });"
   `)
 })
+
+it('spreads values in sx prop', () => {
+  const example = `
+    const styles = {
+      bg: 'red'
+    } 
+
+    const Comp = () => <div sx={{ mb: 1, ...styles }} />
+  `
+  const code = parseCode(example)
+
+  expect(code).toMatchInlineSnapshot(`
+    "import { getStyle as __getStyle, getScaleStyle as __getScaleStyle } from \\"babel-plugin-style-props-emotion/runtime\\";
+    import { jsx as ___EmotionJSX } from \\"@emotion/core\\";
+    const styles = {
+      bg: 'red'
+    };
+    
+    const Comp = () => ___EmotionJSX(\\"div\\", {
+      sx: {
+        mb: 1,
+        ...styles
+      },
+      css: theme => ({
+        marginBottom: __getStyle(theme, \\"space\\", 1)
+      })
+    });"
+  `)
+})

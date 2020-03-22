@@ -15,7 +15,6 @@ import {
 import { DEFAULT_OPTIONS, THEME_IDENTIFIER } from './constants'
 import { mergeMobileStyles, mergeResponsiveStyles } from './mergers'
 import { extractStyleObjects, extractStyleProp, stripStyleProp } from './utils'
-
 export type StylePropExpression = Expression | null
 export type PluginOptions = {
   stripInjectedProp: boolean
